@@ -10,5 +10,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "disable-scroll": "^0.5.1",
+    "electron-reloader": "^1.0.1"
+  }
 }

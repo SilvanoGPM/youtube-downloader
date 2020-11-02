@@ -1,29 +1,41 @@
 const button = document.querySelector(".url-area button");
-const input = document.querySelector(".url-area input");
+const urlInput = document.querySelector(".url-area input");
+const closeBtn = document.getElementById("close-menus");
 
 const firstScreen = document.querySelector('.first-screen');
+const loading = document.querySelector('.loading');
 const infos = document.querySelector('.infos');
 const downloadArea = document.querySelector('.download-area');
 
+closeBtn.addEventListener('click', hideMenus)
 button.addEventListener('click', searchURL);
 
 function searchURL() {
+    hideMenus();
     const url = input.value;
+    firstScreen.style.display = 'none';
+    loading.style.display = 'block';
 
-    // Pesquisa da URL...
+    setTimeout(() => {
+        // Pesquisa da URL...
+        showMenus();
+        input.value = '';
 
+        loading.style.display = 'none';
+    }, 3000);
 
-    input.value = '';
 }
 
 function showMenus() {
-    firstScreen.style.display = 'none';
+    closeBtn.style.display = 'inline-block'
     infos.style.display = 'flex';
     downloadArea.style.display = 'flex';
 }
 
 function hideMenus() {
-    firstScreen.style.display = 'none';
-    infos.style.display = 'flex';
-    downloadArea.style.display = 'flex';
+    firstScreen.style.display = 'flex';
+    closeBtn.style.display = 'none'
+    infos.style.display = 'none';
+    downloadArea.style.display = 'none';
 }
+

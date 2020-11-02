@@ -1,16 +1,19 @@
 const { app, BrowserWindow } = require('electron');
 const { join } = require('path');
-const path = require('path');
+
+try {
+    require('electron-reloader')(module);
+} catch (_) { }
 
 function createWindow() {
     const window = new BrowserWindow({
         width: 800,
         height: 600,
-        minWidth: 600,
+        minWidth: 300,
         minHeight: 500,
         center: true,
         frame: false,
-        icon: path.join(__dirname, 'img/icon.png'),
+        icon: join(__dirname, 'img/icon.png'),
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true,
