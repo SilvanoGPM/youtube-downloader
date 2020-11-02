@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "disable-scroll": "^0.5.1",
-    "electron-reloader": "^1.0.1"
+    "electron-reloader": "^1.0.1",
+    "ytdl-core": "^4.0.2"
   }
 }

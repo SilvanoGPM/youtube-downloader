@@ -38,4 +38,3 @@ function hideMenus() {
     infos.style.display = 'none';
     downloadArea.style.display = 'none';
 }
-

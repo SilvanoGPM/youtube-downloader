@@ -17,11 +17,15 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true,
-        }
+        },
+        show: false,
     });
 
+    window.maximize();
     window.webContents.openDevTools()
     window.loadFile('index.html');
+
+    window.once('ready-to-show', () => window.show());
 }
 
 app.whenReady().then(createWindow);
@@ -37,3 +41,4 @@ app.on('active', () => {
         createWindow();
     }
 })
+

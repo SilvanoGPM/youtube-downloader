@@ -20,8 +20,10 @@ function minimize() {
 function resize() {
     if (!win.isMaximized()) {
         win.maximize();
+        buttons[1].innerHTML = "❐";
     } else {
         win.unmaximize();
+        buttons[1].innerHTML = "□";
     }
 }
 
