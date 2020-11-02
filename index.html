@@ -1,13 +1,72 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Youtube Downloader</title>
+
+    <link rel="stylesheet" href="fontawesome/css/all.css" />
+    <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-    
-    <h1>Teste</h1>
+
+    <div class="control-area">
+        <img src="img/icon.png" alt="ytd-logo" />
+
+        <div class="menus">
+            <button class="control-menu minimize">_</button>
+            <button class="control-menu resize">□</button>
+            <button class="control-menu close">x</button>
+        </div>
+    </div>
+
+    <div class="lateral-menu">
+        <h1>Youtube Downloader</h1>
+
+        <div class="url-area">
+            <input type="text" />
+
+            <button type="button"><i class="fa fa-arrow-circle-right"></i></button>
+        </div>
+
+        <div class="download-status">
+
+        </div>
+    </div>
+
+    <div class="principal-area">
+
+        <figure>
+            <img src="img/maxresdefault.jpg" alt="video-thumbnail" title="Video search thubmnail" />
+        </figure>
+
+        <div class="info-group">
+            <p>Name</p>
+            <output class="info">Down Below</output>
+
+            <p>Channel</p>
+            <output class="info">SkyG0D</output>
+
+            <p>Duration</p>
+            <output class="info">3:50</output>
+        </div>
+
+        <div class="download-area">
+
+            <select class="video-type" name="video-type" id="video-type">
+                <option value="highest">Video</option>
+                <option value="lowest">Music</option>
+            </select>
+
+            <div class="download">
+                <p>Download</p>
+                <button id="download-button"><i class="fas fa-arrow-alt-circle-down"></i></button>
+            </div>
+        </div>
+    </div>
 
 </body>
+
 </html>

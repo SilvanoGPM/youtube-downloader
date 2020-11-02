@@ -1,10 +1,13 @@
 const { app, BrowserWindow } = require('electron');
+const { join } = require('path');
+const path = require('path');
 
 function createWindow() {
     const window = new BrowserWindow({
         width: 800,
         height: 600,
         center: true,
+        icon: path.join(__dirname, 'img/icon.png'),
         webPreferences: {
             nodeIntegration: true,
         }
