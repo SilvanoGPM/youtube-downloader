@@ -13,7 +13,7 @@
 <body>
 
     <div class="control-area">
-        <div class="draggable" >
+        <div class="draggable">
             <img src="img/icon.png" alt="ytd-logo" />
         </div>
 
@@ -28,13 +28,19 @@
         <h1>Youtube Downloader</h1>
 
         <div class="url-area">
-            <input type="text" />
+            <label for="yt-url">Put URL to get info</label>
+            <div class="url-group">
+                <input spellcheck="false" type="url" id="yt-url" class="yt-url" />
 
-            <button type="button"><i class="fa fa-arrow-circle-right"></i></button>
+                <button type="button"><i class="fa fa-arrow-circle-right"></i></button>
+            </div>
         </div>
 
-        <div class="download-status">
+        <div class="download-status-wrapper" >
+            <p>Status</p>
+            <div class="download-status">
 
+            </div>
         </div>
     </div>
 
@@ -69,7 +75,7 @@
         </div>
     </div>
 
-    <script src="js/menu-buttons.js" ></script>
+    <script src="js/menu-buttons.js"></script>
 </body>
 
 </html>
