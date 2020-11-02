@@ -32,11 +32,11 @@
             <div class="url-group">
                 <input spellcheck="false" type="url" id="yt-url" class="yt-url" />
 
-                <button type="button"><i class="fa fa-arrow-circle-right"></i></button>
+                <button type="button"><i class="fa fa-search"></i></button>
             </div>
         </div>
 
-        <div class="download-status-wrapper" >
+        <div class="download-status-wrapper">
             <p>Status</p>
             <div class="download-status">
 
@@ -46,27 +46,51 @@
 
     <div class="principal-area">
 
-        <figure>
-            <img src="img/maxresdefault.jpg" alt="video-thumbnail" title="Video search thubmnail" />
-        </figure>
+        <div class="first-screen">
+            <div>
+                <h1>Welcome to Youtube Downloader!</h1>
+                <p>To start, enter the URL in the field next door.</p>
+                <p>Devolved by SkyG0D | My repository: <span class="repository">https://github.com/SkyG0D</span>.
+                </p>
+            </div>
 
-        <div class="info-group">
-            <p>Name</p>
-            <output class="info">Down Below</output>
+            <img src="img/icon.png" alt="default-logo" />
+        </div>
 
-            <p>Channel</p>
-            <output class="info">SkyG0D</output>
+        <button id="close-menus" type="button" >X</button>
 
-            <p>Duration</p>
-            <output class="info">3:50</output>
+        <div class="infos">
+
+            <figure>
+                <img src="img/maxresdefault.jpg" alt="video-thumbnail" title="Video search thubmnail" />
+            </figure>
+
+
+            <div class="info-group">
+                <p>Name</p>
+                <output class="info">Down Below</output>
+            </div>
+
+            <div class="info-group">
+                <p>Channel</p>
+                <output class="info">SkyG0D</output>
+            </div>
+
+            <div class="info-group">
+                <p>Duration</p>
+                <output class="info">3:50</output>
+            </div>
         </div>
 
         <div class="download-area">
 
-            <select class="video-type" name="video-type" id="video-type">
-                <option value="highest">Video</option>
-                <option value="lowest">Music</option>
-            </select>
+            <div class="video-type">
+                <label for="video-type">Select type of download</label>
+                <select name="video-type" id="video-type">
+                    <option value="highest">Video</option>
+                    <option value="lowest">Music</option>
+                </select>
+            </div>
 
             <div class="download">
                 <p>Download</p>
@@ -76,6 +100,8 @@
     </div>
 
     <script src="js/menu-buttons.js"></script>
+    <script src="js/lateral-config.js"></script>
+    <script src="js/test-btn.js"></script>
 </body>
 
 </html>
