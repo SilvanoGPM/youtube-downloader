@@ -13,6 +13,7 @@ function createWindow() {
         icon: path.join(__dirname, 'img/icon.png'),
         webPreferences: {
             nodeIntegration: true,
+            enableRemoteModule: true,
         }
     });
 
