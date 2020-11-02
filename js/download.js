@@ -63,14 +63,53 @@ function saveAs() {
         properties: [],
     }).then(file => {
         if (!file.canceled) {
+            downloadBtn.parentElement.style.cursor = 'not-allowed';
+            downloadBtn.style.pointerEvents = 'none';
             download(file.filePath.toString());
         }
-    }).catch(err => console.log(err));
+    }).catch(err => {
+        console.log(err);
+        status.innerHTML = '<span class="error" >Ocorred an error, try again<span>';
+    });
 }
 
+let progress;
 function download(path) {
-    ytdl(url, { quality: select.value })
+    stream = ytdl(url, { quality: select.value })
+        .on('response', res => {
+            const max = parseInt(res.headers['content-length'], 10);
+
+            status.innerHTML = `<button class="cancel" onclick="cancelDownload()">X</button><p class="progress-title" >Downloading...</p><progress value="0" max="${max}" ></progress>`;
+
+            progress = status.querySelector("progress");
+        })
+        .on('data', data => progress.value += data.length)
+        .on('finish', () => {
+            status.innerHTML = '<p class="progress-title success" >Downloaded!</p>'
+            setTimeout(clearStatus, 5000);
+        })
+        .on('error', err => {
+            status.innerHTML = '<span class="error" >Ocorred an error, try again<span>';
+            setTimeout(clearStatus, 5000);
+        })
         .pipe(fs.createWriteStream(path));
+}
+
+async function cancelDownload() {
+    console.log(stream);
+    await stream.destroy();
+    status.innerHTML = "";
+    unlockDownload();
+}
+
+function clearStatus() {
+    status.innerHTML = ""
+    unlockDownload();
+}
+
+function unlockDownload() {
+    downloadBtn.parentElement.style.cursor = 'default';
+    downloadBtn.style.pointerEvents = 'all';
 }
 
 function getFilename(string) {

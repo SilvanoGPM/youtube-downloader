@@ -102,7 +102,7 @@ select {
 }
 
 .url-area label::after,
-.download-status-wrapper p::after {
+.download-status-wrapper .title-wrapper::after {
     content: ':';
 }
 
@@ -156,6 +156,20 @@ select {
 .success {
     font-size: 25px;
     color: #2ecc71;
+}
+
+.progress-title {
+    font-size: 20px;
+}
+
+.cancel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 20px;
+    padding: 5px;
+    background: transparent;
+    color: white;
 }
 
 /* Principal Area */
