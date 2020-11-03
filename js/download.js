@@ -37,7 +37,7 @@ function searchURL() {
         loading.style.display = 'flex';
 
         const go = async () => {
-            status.innerHTML = '<span class="success" >URL founded<span>';
+            status.innerHTML = '<span class="success" >URL found<span>';
             const details = (await ytdl.getBasicInfo(url)).videoDetails;
 
             thumbnail.src = details.thumbnail.thumbnails.pop().url;
