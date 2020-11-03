@@ -1,7 +1,9 @@
 const { app, BrowserWindow } = require('electron');
 const { join } = require('path');
-
 const icon = join(__dirname, 'img/icon.png');
+
+app.setAppUserModelId('com.skygod.youtube-downloader');
+app.setName('Youtube Downloader');
 
 function createWindow() {
     const window = new BrowserWindow({
@@ -36,9 +38,4 @@ app.on('active', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
         createWindow();
     }
-})
-
-app.on('ready', () => {
-    app.setAppUserModelId('com.skygod.youtubedownloader');
-    app.setName('Youtube Downloader');
 })
