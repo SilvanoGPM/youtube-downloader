@@ -1,4 +1,5 @@
 node_modules/
 dist/
+windows_installer/
 .vscode/
 js/test-btn.js

@@ -116,6 +116,7 @@ async function cancelDownload() {
     if (option.response === 0) {
         await stream.destroy();
         status.innerHTML = "";
+        setTimeout(() => status.innerHTML = "", 3000);
         unlockDownload();
     }
 }
