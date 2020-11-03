@@ -1,9 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 const { join } = require('path');
 
-try {
-    require('electron-reloader')(module);
-} catch (_) { }
+const icon = join(__dirname, 'img/icon.png');
 
 function createWindow() {
     const window = new BrowserWindow({
@@ -13,7 +11,7 @@ function createWindow() {
         minHeight: 500,
         center: true,
         frame: false,
-        icon: join(__dirname, 'img/icon.png'),
+        icon,
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true,
@@ -22,9 +20,7 @@ function createWindow() {
     });
 
     window.maximize();
-    window.webContents.openDevTools()
     window.loadFile('index.html');
-
     window.once('ready-to-show', () => window.show());
 }
 
@@ -42,3 +38,7 @@ app.on('active', () => {
     }
 })
 
+app.on('ready', () => {
+    app.setAppUserModelId('com.skygod.youtubedownloader');
+    app.setName('Youtube Downloader');
+})

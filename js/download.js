@@ -19,18 +19,22 @@ const downloadBtn = document.querySelector('.download-area button');
 
 let url;
 let stream;
+let isDownloading = false;
 
 closeBtn.addEventListener('click', hideMenus)
 button.addEventListener('click', searchURL);
+urlInput.addEventListener('keydown', evt => {
+    if (evt.code === 'Enter') searchURL();
+});
 downloadBtn.addEventListener('click', saveAs);
 
 function searchURL() {
+    status.innerHTML = "";
     hideMenus();
-    firstScreen.style.display = 'none';
-    loading.style.display = 'flex';
-    url = urlInput.value || "https://www.youtube.com/watch?v=sbCA35RY4RA&list=RD7lTfFw0QgFY&index=23";
-
+    url = urlInput.value;
     if (ytdl.validateURL(url)) {
+        firstScreen.style.display = 'none';
+        loading.style.display = 'flex';
 
         const go = async () => {
             status.innerHTML = '<span class="success" >URL founded<span>';
@@ -74,42 +78,52 @@ function saveAs() {
 }
 
 let progress;
+let downloaded;
 function download(path) {
     stream = ytdl(url, { quality: select.value })
         .on('response', res => {
+            isDownloading = true;
             const max = parseInt(res.headers['content-length'], 10);
 
-            status.innerHTML = `<button class="cancel" onclick="cancelDownload()">X</button><p class="progress-title" >Downloading...</p><progress value="0" max="${max}" ></progress>`;
+            status.innerHTML = `<button class="cancel" onclick="cancelDownload()">X</button><p class="progress-title" >Downloading...</p><progress value="0" max="${max}" ></progress><div class="size-of-download" ><span class="downloaded" ></span><span> of <span>${byteToMb(max)}Mb</span></div>`;
 
+            downloaded = status.querySelector('.downloaded');
             progress = status.querySelector("progress");
         })
-        .on('data', data => progress.value += data.length)
+        .on('data', data => {
+            progress.value += data.length;
+            downloaded.innerText = byteToMb(progress.value) + 'Mb';
+        })
         .on('finish', () => {
-            status.innerHTML = '<p class="progress-title success" >Downloaded!</p>'
-            setTimeout(clearStatus, 5000);
+            status.innerHTML = '<p class="progress-title success" >Downloaded!</p>';
+            unlockDownload();
         })
         .on('error', err => {
             status.innerHTML = '<span class="error" >Ocorred an error, try again<span>';
-            setTimeout(clearStatus, 5000);
+            unlockDownload();
         })
         .pipe(fs.createWriteStream(path));
 }
 
 async function cancelDownload() {
-    console.log(stream);
-    await stream.destroy();
-    status.innerHTML = "";
-    unlockDownload();
-}
+    const option = await dialog.showMessageBox({
+        title: "Cancel Download",
+        message: "Cancel download?",
+        type: "question",
+        buttons: ["Yes", "No"],
+    })
 
-function clearStatus() {
-    status.innerHTML = ""
-    unlockDownload();
+    if (option.response === 0) {
+        await stream.destroy();
+        status.innerHTML = "";
+        unlockDownload();
+    }
 }
 
 function unlockDownload() {
     downloadBtn.parentElement.style.cursor = 'default';
     downloadBtn.style.pointerEvents = 'all';
+    isDownloading = false;
 }
 
 function getFilename(string) {
@@ -132,6 +146,10 @@ function formatSeconds(seconds) {
     const minutes = Math.floor(seconds / 60);
     const restSeconds = (seconds - (60 * minutes))
     return minutes < 60 ? `${filingZero(minutes)}:${filingZero(restSeconds)}` : '1H+';
+}
+
+function byteToMb(bytes) {
+    return ((bytes / 1024) / 1024).toFixed(2);
 }
 
 function showMenus() {

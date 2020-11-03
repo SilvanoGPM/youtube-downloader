@@ -28,5 +28,18 @@ function resize() {
 }
 
 function close() {
+    if (isDownloading) {
+        const option = dialog.showMessageBoxSync({
+            title: "Warning",
+            message: "This will cancel your download, are you sure?",
+            type: "warning",
+            buttons: ["Ok", "Cancel"],
+        });
+        
+        if (option === 1) {
+            return;
+        }
+    }
+
     win.close();
 }

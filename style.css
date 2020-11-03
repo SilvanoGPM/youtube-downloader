@@ -150,6 +150,7 @@ select {
 
 .error {
     font-size: 30px;
+    text-align: center;
     color: var(--primary-color);
 }
 
@@ -170,6 +171,15 @@ select {
     padding: 5px;
     background: transparent;
     color: white;
+}
+
+.size-of-download {
+    margin-top: 10px;
+}
+
+.size-of-download span {
+    font-size: 18px;
+    color: #2ecc71;
 }
 
 /* Principal Area */
