@@ -6,14 +6,15 @@
   "main": "index.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager ./ \"Youtube Downloader\" --out=dist --icon=img/icon.ico",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "electron-packager ./ \"Youtube Downloader\" --out=dist --icon=img/icon.ico"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "disable-scroll": "^0.5.1",
+    "gulp": "^4.0.2",
+    "gulp-sass": "^4.1.0",
     "ytdl-core": "^4.0.2"
   },
   "devDependencies": {

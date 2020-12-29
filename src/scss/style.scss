@@ -1,0 +1,100 @@
+@import 'helpers/variables';
+@import 'helpers/mixins';
+
+@import 'base/global';
+@import 'layout/header';
+@import 'layout/lateral';
+@import 'layout/principal';
+
+@media screen and (min-width: 750px) {
+  .first-screen h1 {
+    font-size: 40px;
+  }
+
+  .first-screen p {
+    font-size: 25px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+
+  .infos p,
+  .infos label {
+    font-size: 30px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .infos figure {
+    width: 300px;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .infos figure {
+    width: 400px;
+  }
+}
+
+@media screen and (min-height: 700px) {
+  .principal-area {
+    flex-direction: column;
+  }
+
+  .download-area {
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid $secondary-background;
+  }
+
+  .video-type {
+    margin-bottom: 0;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .download-area {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .infos output {
+    font-size: 20px;
+  }
+
+  .infos picture {
+    width: 500px;
+  }
+}
+
+/* @media screen and (max-width: 700px) {
+  .principal-area .download-area {
+      display: none;
+  }
+} */
+
+@keyframes spin {
+  to {
+    transform: rotate(360DEG);
+  }
+
+  0% {
+    font-size: 30px;
+  }
+
+  50% {
+    font-size: 35px;
+  }
+
+  100% {
+    font-size: 25px;
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

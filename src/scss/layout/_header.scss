@@ -1,0 +1,33 @@
+/* Control Area */
+
+.control-area {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 50px;
+  background: $primary-background;
+}
+
+.control-area .draggable {
+  flex-grow: 1;
+  -webkit-app-region: drag;
+}
+
+.control-area img {
+  width: 35px;
+  height: 35px;
+  margin-left: 10px;
+}
+
+.menus {
+  flex-grow: 0;
+}
+
+.control-button {
+  background: transparent;
+  color: white;
+  padding: 20px;
+  z-index: 9999;
+}

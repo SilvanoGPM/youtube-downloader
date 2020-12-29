@@ -1,4 +1,6 @@
-const { remote } = require('electron');
+const {
+    remote
+} = require('electron');
 const win = remote.getCurrentWindow();
 
 const buttonsActions = {
@@ -18,12 +20,12 @@ function minimize() {
 }
 
 function resize() {
-    if (!win.isMaximized()) {
-        win.maximize();
-        buttons[1].innerHTML = "❐";
-    } else {
+    if (win.isMaximized()) {
         win.unmaximize();
         buttons[1].innerHTML = "□";
+    } else {
+        win.maximize();
+        buttons[1].innerHTML = "❐";
     }
 }
 
@@ -35,7 +37,7 @@ function close() {
             type: "warning",
             buttons: ["Ok", "Cancel"],
         });
-        
+
         if (option === 1) {
             return;
         }

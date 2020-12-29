@@ -1,0 +1,455 @@
+/* Global Configure */
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+}
+
+*,
+*::after *::before {
+  box-sizing: border-box;
+}
+
+body {
+  user-select: none;
+  color: #ff7675;
+}
+
+button,
+select {
+  cursor: pointer;
+}
+
+/* Control Area */
+.control-area {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 50px;
+  background: #181818;
+}
+
+.control-area .draggable {
+  flex-grow: 1;
+  -webkit-app-region: drag;
+}
+
+.control-area img {
+  width: 35px;
+  height: 35px;
+  margin-left: 10px;
+}
+
+.menus {
+  flex-grow: 0;
+}
+
+.control-button {
+  background: transparent;
+  color: white;
+  padding: 20px;
+  z-index: 9999;
+}
+
+/* Lateral Menu */
+.lateral-menu {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 300px;
+  height: 100%;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+  align-items: center;
+  background: #262626;
+}
+
+.lateral-menu h1 {
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 20px;
+  line-height: 100px;
+  width: 100%;
+  border-right: 1px solid #8f0000;
+  border-bottom: 1px solid #8f0000;
+  background: #181818;
+}
+
+.url-area {
+  width: 100%;
+}
+
+.url-area label,
+.download-status-wrapper p {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  font-size: 25px;
+}
+
+.url-area label {
+  cursor: pointer;
+}
+
+.url-area label::after,
+.download-status-wrapper .title-wrapper::after {
+  content: ':';
+}
+
+.url-group {
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  margin-top: 8px;
+}
+
+.url-group input,
+.url-group button {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #8f0000;
+  color: white;
+  background: #181818;
+}
+
+.url-group input {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.url-group button {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  margin-left: -5px;
+}
+
+.download-status {
+  width: 250px;
+  height: 150px;
+  border: 1px solid #8f0000;
+  border-radius: 10px;
+  margin-bottom: 100px;
+  margin-top: 5px;
+  background: #181818;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.error {
+  font-size: 30px;
+  text-align: center;
+  color: #ff7675;
+}
+
+.success {
+  font-size: 25px;
+  color: #2ecc71;
+}
+
+.progress-title {
+  font-size: 20px;
+}
+
+.cancel {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 20px;
+  padding: 5px;
+  background: transparent;
+  color: white;
+}
+
+.size-of-download {
+  margin-top: 10px;
+}
+
+.size-of-download span {
+  font-size: 18px;
+  color: #2ecc71;
+}
+
+/* Principal Area */
+.principal-area {
+  position: absolute;
+  top: 50px;
+  left: 300px;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  width: calc(100% - 300px);
+  height: calc(100% - 50px);
+  border-top: 1px solid #8f0000;
+  background: #333333;
+  padding: 50px;
+  overflow: hidden;
+}
+
+.loading {
+  width: 80px;
+  height: 80px;
+  background: transparent;
+  border: 5px solid rgba(255, 255, 255, 0.5);
+  border-left: 5px solid white;
+  display: none;
+  border-radius: 50%;
+  animation: 1.2s linear infinite spin;
+}
+
+.first-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.first-screen h1 {
+  color: #8f0000;
+  font-size: 35px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.first-screen p {
+  text-align: center;
+}
+
+.first-screen img {
+  margin-top: 50px;
+  width: 150px;
+  height: 150px;
+}
+
+.first-screen .repository {
+  user-select: all;
+}
+
+.repository::selection {
+  background: #ff7675;
+  color: white;
+}
+
+.infos {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.infos figure {
+  width: 200px;
+}
+
+.infos img {
+  width: 100%;
+  border: 1px solid #8f0000;
+  border-radius: 10px;
+}
+
+.info-group {
+  display: inline-block;
+  text-align: center;
+  width: 80%;
+  word-wrap: none;
+  margin: 15px 0 0 5px;
+}
+
+.info-group p,
+.info-group output {
+  display: inline;
+}
+
+.info-group p {
+  color: #8f0000;
+  text-indent: 50px;
+  font-size: 30px;
+}
+
+.info-group p::after {
+  content: ':';
+}
+
+.info-group output {
+  font-size: 25px;
+  font-weight: bold;
+  word-wrap: break-word;
+}
+
+#close-menus {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: none;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  color: white;
+  border: 1px solid #8f0000;
+  border-radius: 50%;
+  transition: .2s;
+}
+
+#close-menus:hover {
+  background: #ff7675;
+  border: 0;
+}
+
+.download-area {
+  width: 100%;
+  display: none;
+  flex-flow: column;
+  align-items: center;
+}
+
+.video-type {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  margin-left: 10px;
+}
+
+.video-type label,
+.download p {
+  font-size: 20px;
+}
+
+.video-type label::after,
+.download p::after {
+  content: ':';
+}
+
+.video-type select,
+.video-type label {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}
+
+.video-type select {
+  background: #262626;
+  border: 1px solid #8f0000;
+  border-radius: 10px;
+  padding: 10px;
+  color: white;
+}
+
+.download {
+  display: flex;
+  margin-top: 50px;
+}
+
+.download p {
+  margin-top: 10px;
+}
+
+.download button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-left: 10px;
+  color: white;
+  background: #ff7675;
+  transition: .25s;
+}
+
+.download button i {
+  font-size: 30px;
+}
+
+.download button:hover {
+  background: #2ecc71;
+}
+
+.download button:hover > i {
+  animation: 1s spin;
+}
+
+@media screen and (min-width: 750px) {
+  .first-screen h1 {
+    font-size: 40px;
+  }
+  .first-screen p {
+    font-size: 25px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .infos p,
+  .infos label {
+    font-size: 30px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .infos figure {
+    width: 300px;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .infos figure {
+    width: 400px;
+  }
+}
+
+@media screen and (min-height: 700px) {
+  .principal-area {
+    flex-direction: column;
+  }
+  .download-area {
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid #262626;
+  }
+  .video-type {
+    margin-bottom: 0;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .download-area {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .infos output {
+    font-size: 20px;
+  }
+  .infos picture {
+    width: 500px;
+  }
+}
+
+/* @media screen and (max-width: 700px) {
+  .principal-area .download-area {
+      display: none;
+  }
+} */
+@keyframes spin {
+  to {
+    transform: rotate(360DEG);
+  }
+  0% {
+    font-size: 30px;
+  }
+  50% {
+    font-size: 35px;
+  }
+  100% {
+    font-size: 25px;
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
