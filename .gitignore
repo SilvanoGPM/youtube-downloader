@@ -3,4 +3,3 @@ dist/
 logs/
 windows_installer/
 .vscode/
-src/js/test-btn.js
