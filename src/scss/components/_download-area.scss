@@ -1,0 +1,26 @@
+.download-status-wrapper p {
+    @extend %center-align;
+}
+
+.download-status {
+    @extend %rounded,
+    %default-border;
+    width: 250px;
+    height: 150px;
+    margin-bottom: 100px;
+    margin-top: 5px;
+    background: $primary-background;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.progress {
+    width: 90%;
+}
+
+.progress-title {
+    font-size: 10px;
+}

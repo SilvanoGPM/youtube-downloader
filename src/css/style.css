@@ -1,3 +1,19 @@
+.url-group input,
+.url-group button, .download-status {
+  border: 1px solid #8f0000;
+}
+
+.download-status {
+  border-radius: 10px;
+}
+
+.url-area label, .download-status-wrapper p {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  font-size: 25px;
+}
+
 /* Global Configure */
 * {
   margin: 0;
@@ -20,6 +36,59 @@ body {
 button,
 select {
   cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+  0% {
+    font-size: 30px;
+  }
+  50% {
+    font-size: 35px;
+  }
+  100% {
+    font-size: 25px;
+  }
+}
+
+.error {
+  font-size: 30px;
+  text-align: center;
+  color: #ff7675;
+}
+
+.success {
+  font-size: 25px;
+  color: #2ecc71;
+}
+
+.cancel {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 20px;
+  padding: 5px;
+  background: transparent;
+  color: white;
+}
+
+.size-of-download {
+  margin-top: 10px;
+}
+
+.size-of-download span {
+  font-size: 18px;
+  color: #2ecc71;
+}
+
+.cancel-download {
+  font-size: 20px;
 }
 
 /* Control Area */
@@ -93,21 +162,8 @@ select {
   width: 100%;
 }
 
-.url-area label,
-.download-status-wrapper p {
-  display: inline-block;
-  width: 100%;
-  text-align: center;
-  font-size: 25px;
-}
-
 .url-area label {
   cursor: pointer;
-}
-
-.url-area label::after,
-.download-status-wrapper .title-wrapper::after {
-  content: ':';
 }
 
 .url-group {
@@ -121,7 +177,6 @@ select {
 .url-group button {
   padding: 10px;
   text-align: center;
-  border: 1px solid #8f0000;
   color: white;
   background: #181818;
 }
@@ -140,8 +195,6 @@ select {
 .download-status {
   width: 250px;
   height: 150px;
-  border: 1px solid #8f0000;
-  border-radius: 10px;
   margin-bottom: 100px;
   margin-top: 5px;
   background: #181818;
@@ -152,18 +205,7 @@ select {
   position: relative;
 }
 
-.error {
-  font-size: 30px;
-  text-align: center;
-  color: #ff7675;
-}
-
-.success {
-  font-size: 25px;
-  color: #2ecc71;
-}
-
-progress {
+.progress {
   width: 90%;
 }
 
@@ -171,27 +213,15 @@ progress {
   font-size: 10px;
 }
 
-.cancel {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-size: 20px;
-  padding: 5px;
+.loading {
+  width: 80px;
+  height: 80px;
   background: transparent;
-  color: white;
-}
-
-.size-of-download {
-  margin-top: 10px;
-}
-
-.size-of-download span {
-  font-size: 18px;
-  color: #2ecc71;
-}
-
-.cancel-download {
-  font-size: 20px;
+  border: 5px solid rgba(255, 255, 255, 0.5);
+  border-left: 5px solid white;
+  display: none;
+  border-radius: 50%;
+  animation: 1.2s linear infinite spin;
 }
 
 /* Principal Area */
@@ -208,17 +238,6 @@ progress {
   background: #333333;
   padding: 50px;
   overflow: hidden;
-}
-
-.loading {
-  width: 80px;
-  height: 80px;
-  background: transparent;
-  border: 5px solid rgba(255, 255, 255, 0.5);
-  border-left: 5px solid white;
-  display: none;
-  border-radius: 50%;
-  animation: 1.2s linear infinite spin;
 }
 
 .first-screen {
@@ -249,9 +268,13 @@ progress {
   user-select: all;
 }
 
+.repository {
+  cursor: pointer;
+}
+
 .repository::selection {
-  background: #ff7675;
   color: white;
+  background: #ff7675;
 }
 
 .infos {
@@ -291,7 +314,7 @@ progress {
 }
 
 .info-group p::after {
-  content: ':';
+  content: ":";
 }
 
 .info-group output {
@@ -311,7 +334,7 @@ progress {
   color: white;
   border: 1px solid #8f0000;
   border-radius: 50%;
-  transition: .2s;
+  transition: 0.2s;
 }
 
 #close-menus:hover {
@@ -339,7 +362,7 @@ progress {
 
 .video-type label::after,
 .download p::after {
-  content: ':';
+  content: ":";
 }
 
 .video-type select,
@@ -373,7 +396,7 @@ progress {
   margin-left: 10px;
   color: white;
   background: #ff7675;
-  transition: .25s;
+  transition: 0.25s;
 }
 
 .download button i {
@@ -446,28 +469,4 @@ progress {
   .infos picture {
     width: 500px;
   }
-}
-
-/* @media screen and (max-width: 700px) {
-  .principal-area .download-area {
-      display: none;
-  }
-} */
-@keyframes spin {
-  to {
-    transform: rotate(360DEG);
-  }
-  0% {
-    font-size: 30px;
-  }
-  50% {
-    font-size: 35px;
-  }
-  100% {
-    font-size: 25px;
-  }
-}
-
-::-webkit-scrollbar {
-  display: none;
 }

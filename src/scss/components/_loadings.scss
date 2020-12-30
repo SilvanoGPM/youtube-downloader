@@ -1,0 +1,11 @@
+// Loading
+.loading {
+    width: 80px;
+    height: 80px;
+    background: transparent;
+    border: 5px solid rgba(255, 255, 255, 0.5);
+    border-left: 5px solid white;
+    display: none;
+    border-radius: 50%;
+    animation: 1.2s linear infinite spin;
+}

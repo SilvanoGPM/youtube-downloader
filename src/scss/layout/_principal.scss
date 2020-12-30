@@ -1,194 +1,186 @@
 /* Principal Area */
 
 .principal-area {
-  position: absolute;
-  top: 50px;
-  left: 300px;
-  display: flex;
-  flex-flow: row;
-  align-items: center;
-  width: calc(100% - 300px);
-  height: calc(100% - 50px);
-  border-top: 1px solid $secondary-color;
-  background: $section-background;
-  padding: 50px;
-  overflow: hidden;
-}
-
-.loading {
-  width: 80px;
-  height: 80px;
-  background: transparent;
-  border: 5px solid rgba(255, 255, 255, 0.5);
-  border-left: 5px solid white;
-  display: none;
-  border-radius: 50%;
-  animation: 1.2s linear infinite spin;
+    position: absolute;
+    top: 50px;
+    left: 300px;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    width: calc(100% - 300px);
+    height: calc(100% - 50px);
+    border-top: 1px solid $secondary-color;
+    background: $section-background;
+    padding: 50px;
+    overflow: hidden;
 }
 
 .first-screen {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .first-screen h1 {
-  color: $secondary-color;
-  font-size: 35px;
-  text-align: center;
-  margin-bottom: 10px;
+    color: $secondary-color;
+    font-size: 35px;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 .first-screen p {
-  text-align: center;
+    text-align: center;
 }
 
 .first-screen img {
-  margin-top: 50px;
-  width: 150px;
-  height: 150px;
+    margin-top: 50px;
+    width: 150px;
+    height: 150px;
 }
 
 .first-screen .repository {
-  user-select: all;
+    user-select: all;
 }
 
-.repository::selection {
-  background: $primary-color;
-  color: white;
+.repository {
+    cursor: pointer;
+    &::selection {
+        color: white;
+        background: $primary-color;
+    }
 }
 
 .infos {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .infos figure {
-  width: 200px;
+    width: 200px;
 }
 
 .infos img {
-  width: 100%;
-  border: 1px solid $secondary-color;
-  border-radius: 10px;
+    width: 100%;
+    border: 1px solid $secondary-color;
+    border-radius: 10px;
 }
 
 .info-group {
-  display: inline-block;
-  text-align: center;
-  width: 80%;
-  word-wrap: none;
-  margin: 15px 0 0 5px;
+    display: inline-block;
+    text-align: center;
+    width: 80%;
+    word-wrap: none;
+    margin: 15px 0 0 5px;
 }
 
 .info-group p,
 .info-group output {
-  display: inline;
+    display: inline;
 }
 
 .info-group p {
-  color: $secondary-color;
-  text-indent: 50px;
-  font-size: 30px;
+    color: $secondary-color;
+    text-indent: 50px;
+    font-size: 30px;
 }
 
 .info-group p::after {
-  content: ':';
+    content: ":";
 }
 
 .info-group output {
-  font-size: 25px;
-  font-weight: bold;
-  word-wrap: break-word;
+    font-size: 25px;
+    font-weight: bold;
+    word-wrap: break-word;
 }
 
 #close-menus {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  display: none;
-  width: 20px;
-  height: 20px;
-  background: transparent;
-  color: white;
-  border: 1px solid $secondary-color;
-  border-radius: 50%;
-  transition: .2s;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: none;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    color: white;
+    border: 1px solid $secondary-color;
+    border-radius: 50%;
+    transition: 0.2s;
 }
 
 #close-menus:hover {
-  background: $primary-color;
-  border: 0;
+    background: $primary-color;
+    border: 0;
 }
 
 .download-area {
-  width: 100%;
-  display: none;
-  flex-flow: column;
-  align-items: center;
+    width: 100%;
+    display: none;
+    flex-flow: column;
+    align-items: center;
 }
 
 .video-type {
-  margin-top: 20px;
-  margin-bottom: 30px;
-  margin-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    margin-left: 10px;
 }
 
 .video-type label,
 .download p {
-  font-size: 20px;
+    font-size: 20px;
 }
 
 .video-type label::after,
 .download p::after {
-  content: ':';
+    content: ":";
 }
 
 .video-type select,
 .video-type label {
-  display: inline-block;
-  text-align: center;
-  width: 100%;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
 }
 
 .video-type select {
-  background: $secondary-background;
-  border: 1px solid $secondary-color;
-  border-radius: 10px;
-  padding: 10px;
-  color: white;
+    background: $secondary-background;
+    border: 1px solid $secondary-color;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
 }
 
 .download {
-  display: flex;
-  margin-top: 50px;
+    display: flex;
+    margin-top: 50px;
 }
 
 .download p {
-  margin-top: 10px;
+    margin-top: 10px;
 }
 
 .download button {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-left: 10px;
-  color: white;
-  background: $primary-color;
-  transition: .25s;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 10px;
+    color: white;
+    background: $primary-color;
+    transition: 0.25s;
 }
 
 .download button i {
-  font-size: 30px;
+    font-size: 30px;
 }
 
 .download button:hover {
-  background: #2ecc71;
+    background: #2ecc71;
 }
 
 .download button:hover>i {
-  animation: 1s spin;
+    animation: 1s spin;
 }

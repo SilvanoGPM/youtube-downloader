@@ -141,7 +141,7 @@ const initialDownloadSetup = path => res => {
         status.innerHTML = `
         <button class="cancel">X</button>
         <p class="progress-title">Downloading...</ p>
-        <progress value="0" max="${max}"></progress>
+        <progress class="progress" value="0" max="${max}"></progress>
         <div class="size-of-download">
             <span class="downloaded" ></span><span> of <span>${byteToMb(max)}Mb</span>
         </div>

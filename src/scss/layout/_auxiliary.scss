@@ -1,0 +1,33 @@
+.error {
+    font-size: 30px;
+    text-align: center;
+    color: $primary-color;
+}
+
+.success {
+    font-size: 25px;
+    color: $success-color;
+}
+
+.cancel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 20px;
+    padding: 5px;
+    background: transparent;
+    color: white;
+}
+
+.size-of-download {
+    margin-top: 10px;
+}
+
+.size-of-download span {
+    font-size: 18px;
+    color: #2ecc71;
+}
+
+.cancel-download {
+    font-size: 20px;
+}
