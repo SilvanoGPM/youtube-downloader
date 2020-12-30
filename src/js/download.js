@@ -1,111 +1,118 @@
-const { dialog } = require('electron').remote;
+const {
+    dialog
+} = require('electron').remote;
+const {
+    formatSeconds,
+    byteToMb,
+    elementDisplay,
+    changeElementsDisplay,
+    controlDisplayName,
+    getFilename,
+} = require(__dirname + '/src/js/utils.js');
+
 const ytdl = require('ytdl-core');
 const fs = require('fs');
 
-const button = document.querySelector(".url-area button");
-const urlInput = document.querySelector(".url-area input");
-const closeBtn = document.getElementById("close-menus");
-const status = document.querySelector('.download-status');
-
-const firstScreen = document.querySelector('.first-screen');
 const loading = document.querySelector('.loading');
-const infos = document.querySelector('.infos');
-const downloadArea = document.querySelector('.download-area');
 
-const thumbnail = document.querySelector(".infos img");
-const outputs = document.querySelectorAll(".info");
-const select = document.querySelector(".download-area select");
-const downloadBtn = document.querySelector('.download-area button');
+const searchForm = document.querySelector('.url-group');
+const urlInput = document.querySelector(".url-area input");
+
+const status = document.querySelector('.download-status');
+let progressElt;
+let downloadedElt;
+
+const closeBtn = document.getElementById("close-menus");
+const firstScreen = document.querySelector('.first-screen');
+
+const infosElt = document.querySelector('.infos');
+const thumbnailElt = infosElt.querySelector("img");
+const titleOutput = infosElt.querySelector('[data-output="title"]');
+const channelOutput = infosElt.querySelector('[data-output="channel"]');
+const durationOutput = infosElt.querySelector('[data-output="duration"]');
+
+const downloadArea = document.querySelector('.download-area');
+const selectElt = downloadArea.querySelector("select");
+const downloadBtn = downloadArea.querySelector('button');
 
 let url;
 let stream;
+let lastestSearchID;
 let isDownloading = false;
 
-closeBtn.addEventListener('click', hideMenus)
-button.addEventListener('click', searchURL);
-urlInput.addEventListener('keydown', evt => {
-    if (evt.code === 'Enter') searchURL();
-});
-downloadBtn.addEventListener('click', saveAs);
+const showMenus = () =>
+    changeElementsDisplay([
+        elementDisplay(closeBtn, 'inline-block'),
+        elementDisplay(infosElt, 'flex'),
+        elementDisplay(downloadArea, 'flex'),
+        elementDisplay(loading)
+    ]);
 
-function searchURL() {
-    status.innerHTML = "";
+const hideMenus = () =>
+    changeElementsDisplay([
+        elementDisplay(firstScreen, 'flex'),
+        elementDisplay(closeBtn),
+        elementDisplay(infosElt),
+        elementDisplay(downloadArea),
+        elementDisplay(loading),
+    ]);
+
+const displayVideoInfo = async() => {
+    const basicInfo = await ytdl.getBasicInfo(url);
+    const {
+        title,
+        ownerChannelName,
+        lengthSeconds,
+        thumbnail: images
+    } = basicInfo.videoDetails;
+
+    const thumbnailURL = images.thumbnails.pop().url;
+    thumbnailElt.src = thumbnailURL;
+
+    titleOutput.innerText = controlDisplayName(title);
+    channelOutput.innerText = controlDisplayName(ownerChannelName);
+    durationOutput.innerText = formatSeconds(lengthSeconds);
+
+    showMenus();
+}
+
+const searchURL = () => {
     hideMenus();
-    url = urlInput.value;
-    if (ytdl.validateURL(url)) {
-        firstScreen.style.display = 'none';
-        loading.style.display = 'flex';
+    clearTimeout(lastestSearchID);
+    status.innerHTML = "";
 
-        const go = async () => {
-            status.innerHTML = '<span class="success" >URL found<span>';
-            const details = (await ytdl.getBasicInfo(url)).videoDetails;
+    if (ytdl.validateURL(urlInput.value)) {
+        url = urlInput.value;
+        changeElementsDisplay([
+            elementDisplay(firstScreen),
+            elementDisplay(loading, 'flex'),
+        ])
 
-            thumbnail.src = details.thumbnail.thumbnails.pop().url;
-            outputs[0].innerText = controlDisplayName(details.title);
-            outputs[1].innerText = details.ownerChannelName;
-            outputs[2].innerText = formatSeconds(details.lengthSeconds);
-
-            loading.style.display = 'none';
-
-            showMenus();
-        }
-
-        setTimeout(go, 2000);
+        status.innerHTML = '<span class="success" >URL found<span>';
+        lastestSearchID = setTimeout(displayVideoInfo, 2000);
     } else {
-        status.innerHTML = '<span class="error" >Insert a valid URL<span>';
+        status.innerHTML = `
+        <span class="error" >Insert a valid URL<span>
+        `;
     }
 
     urlInput.value = '';
 }
 
-function saveAs() {
-    dialog.showSaveDialog({
-        title: 'Select the path to the file',
-        defaultPath: `${process.env.USERPROFILE}/Downloads/${getFilename(outputs[0].innerText)}`,
-        buttonLabel: 'Save',
-        filters: [{ name: 'Media Files', extensions: ['mp4', 'webm', 'mp3'] }],
-        properties: [],
-    }).then(file => {
-        if (!file.canceled) {
-            downloadBtn.parentElement.style.cursor = 'not-allowed';
-            downloadBtn.style.pointerEvents = 'none';
-            download(file.filePath.toString());
-        }
-    }).catch(err => {
-        console.log(err);
-        status.innerHTML = '<span class="error" >Ocorred an error, try again<span>';
-    });
+const handleError = err => {
+    const logsPath = `${__dirname}/logs/error-log-${Date.now()}.txt`;
+    fs.writeFileSync(logsPath, err);
+    status.innerHTML = `
+    <span class="error" >Ocorred an error, try again<span>`;
 }
 
-let progress;
-let downloaded;
-function download(path) {
-    stream = ytdl(url, { quality: select.value })
-        .on('response', res => {
-            isDownloading = true;
-            const max = parseInt(res.headers['content-length'], 10);
-
-            status.innerHTML = `<button class="cancel" onclick="cancelDownload()">X</button><p class="progress-title" >Downloading...</p><progress value="0" max="${max}" ></progress><div class="size-of-download" ><span class="downloaded" ></span><span> of <span>${byteToMb(max)}Mb</span></div>`;
-
-            downloaded = status.querySelector('.downloaded');
-            progress = status.querySelector("progress");
-        })
-        .on('data', data => {
-            progress.value += data.length;
-            downloaded.innerText = byteToMb(progress.value) + 'Mb';
-        })
-        .on('finish', () => {
-            status.innerHTML = '<p class="progress-title success" >Downloaded!</p>';
-            unlockDownload();
-        })
-        .on('error', err => {
-            status.innerHTML = '<span class="error" >Ocorred an error, try again<span>';
-            unlockDownload();
-        })
-        .pipe(fs.createWriteStream(path));
+const unlockDownload = () => {
+    downloadBtn.parentElement.style.cursor = 'default';
+    downloadBtn.style.pointerEvents = 'all';
+    isDownloading = false;
 }
 
-async function cancelDownload() {
+const cancelDownload = async path => {
     const option = await dialog.showMessageBox({
         title: "Cancel Download",
         message: "Cancel download?",
@@ -114,54 +121,105 @@ async function cancelDownload() {
     })
 
     if (option.response === 0) {
+        isDownloading = false;
+        status.innerHTML = `
+            <span class="cancel-download" >Download canceled!<span>
+        `;
+        setTimeout(() => status.innerHTML = "", 1000);
+
         await stream.destroy();
-        status.innerHTML = "";
-        setTimeout(() => status.innerHTML = "", 3000);
+        fs.unlinkSync(path);
+
         unlockDownload();
     }
 }
 
-function unlockDownload() {
-    downloadBtn.parentElement.style.cursor = 'default';
-    downloadBtn.style.pointerEvents = 'all';
-    isDownloading = false;
+const initialDownloadSetup = path => res => {
+    if (isDownloading) {
+        const max = parseInt(res.headers['content-length'], 10);
+
+        status.innerHTML = `
+        <button class="cancel">X</button>
+        <p class="progress-title">Downloading...</ p>
+        <progress value="0" max="${max}"></progress>
+        <div class="size-of-download">
+            <span class="downloaded" ></span><span> of <span>${byteToMb(max)}Mb</span>
+        </div>
+    `;
+
+        const cancelButton = status.querySelector('button.cancel');
+        cancelButton.addEventListener('click', () => cancelDownload(path));
+
+        downloadedElt = status.querySelector('.downloaded');
+        progressElt = status.querySelector("progress");
+    }
+};
+
+const updateSize = data => {
+    if (isDownloading) {
+        progressElt.value += data.length;
+        downloadedElt.innerText = byteToMb(progressElt.value) + 'Mb';
+    }
+};
+
+const downloadComplete = () => {
+    if (isDownloading) {
+        status.innerHTML = '<p class="progress-title success" >Downloaded!</p>';
+        unlockDownload();
+    }
 }
 
-function getFilename(string) {
-    let videoName = string.replace(/\s+/g, '-').replace(/([^\w-])+/g, "");
-    const extension = select.value === 'highest' ? '.mp4' : '.mp3';
-    return videoName + extension;
-}
+function download(path) {
+    isDownloading = true;
 
-function controlDisplayName(string) {
-    if (string.length > 90) {
-        return string.substring(0, 90) + "...";
+    const options = {
+        quality: selectElt.value
     }
 
-    return string;
+    stream = ytdl(url, options)
+        .on('response', initialDownloadSetup(path))
+        .on('data', updateSize)
+        .on('finish', downloadComplete)
+        .on('error', err => {
+            handleError(err);
+            unlockDownload();
+        })
+        .pipe(fs.createWriteStream(path));
 }
 
-function formatSeconds(seconds) {
-    const filingZero = number => number <= 9 ? `0${number}` : number;
+const handleVideoDownload = file => {
+    if (!file.canceled) {
+        downloadBtn.parentElement.style.cursor = 'not-allowed';
+        downloadBtn.style.pointerEvents = 'none';
+        download(file.filePath.toString());
+    }
+};
 
-    const minutes = Math.floor(seconds / 60);
-    const restSeconds = (seconds - (60 * minutes))
-    return minutes < 60 ? `${filingZero(minutes)}:${filingZero(restSeconds)}` : '1H+';
+const saveAs = () => {
+    const filename = getFilename(titleOutput.innerText, selectElt.value);
+    const defaultPath = `${process.env.USERPROFILE}/Downloads/${filename}`;
+
+    const options = {
+        title: 'Select the path to the file',
+        defaultPath,
+        buttonLabel: 'Save',
+        filters: [{
+            name: 'Media Files',
+            extensions: ['mp4', 'webm', 'mp3']
+        }],
+        properties: [],
+    }
+
+    dialog.showSaveDialog(options)
+        .then(handleVideoDownload)
+        .catch(handleError);
 }
 
-function byteToMb(bytes) {
-    return ((bytes / 1024) / 1024).toFixed(2);
+const handleSearchForm = evt => {
+    evt.preventDefault();
+    searchURL();
 }
 
-function showMenus() {
-    closeBtn.style.display = 'inline-block'
-    infos.style.display = 'flex';
-    downloadArea.style.display = 'flex';
-}
-
-function hideMenus() {
-    firstScreen.style.display = 'flex';
-    closeBtn.style.display = 'none'
-    infos.style.display = 'none';
-    downloadArea.style.display = 'none';
-}
+searchForm.addEventListener('submit', handleSearchForm);
+downloadBtn.addEventListener('click', saveAs);
+closeBtn.addEventListener('click', hideMenus);

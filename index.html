@@ -18,9 +18,9 @@
         </div>
 
         <div class="menus">
-            <button class="control-button minimize">_</button>
-            <button class="control-button resize">□</button>
-            <button class="control-button close">x</button>
+            <button class="control-button" data-control="minimize">_</button>
+            <button class="control-button" data-control="resize">□</button>
+            <button class="control-button" data-control="close">x</button>
         </div>
     </div>
 
@@ -29,11 +29,10 @@
 
         <div class="url-area">
             <label for="yt-url">Put URL for information</label>
-            <div class="url-group">
-                <input spellcheck="false" type="url" id="yt-url" class="yt-url" />
-
-                <button type="button"><i class="fa fa-search"></i></button>
-            </div>
+            <form class="url-group">
+                <input spellcheck="false" type="text" id="yt-url" />
+                <button><i class="fa fa-search"></i></button>
+            </form>
         </div>
 
         <div class="download-status-wrapper">
@@ -69,20 +68,19 @@
                 <img src="" alt="video-thumbnail" title="Video search thubmnail" />
             </figure>
 
-
             <div class="info-group">
                 <p>Title</p>
-                <output class="info"></output>
+                <output data-output="title"></output>
             </div>
 
             <div class="info-group">
                 <p>Channel</p>
-                <output class="info"></output>
+                <output data-output="channel"></output>
             </div>
 
             <div class="info-group">
                 <p>Duration</p>
-                <output class="info"></output>
+                <output data-output="duration"></output>
             </div>
         </div>
 

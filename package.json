@@ -15,7 +15,7 @@
     "disable-scroll": "^0.5.1",
     "gulp": "^4.0.2",
     "gulp-sass": "^4.1.0",
-    "ytdl-core": "^4.0.2"
+    "ytdl-core": "^4.2.1"
   },
   "devDependencies": {
     "electron": "^10.1.5",

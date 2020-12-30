@@ -30,4 +30,13 @@
   color: white;
   padding: 20px;
   z-index: 9999;
+  transition: .25s;
+
+  &:hover {
+    background: rgba(black, 0.9);
+  }
+}
+
+[data-control="close"]:hover {
+  background: rgba(red, 0.9);
 }

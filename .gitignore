@@ -1,5 +1,6 @@
 node_modules/
 dist/
+logs/
 windows_installer/
 .vscode/
-src/test-btn.js
+src/js/test-btn.js

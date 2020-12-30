@@ -1,122 +1,130 @@
 /* Lateral Menu */
 
 .lateral-menu {
-  position: fixed;
-  top: 50px;
-  left: 0;
-  width: 300px;
-  height: 100%;
-  display: flex;
-  flex-flow: column wrap;
-  justify-content: space-between;
-  align-items: center;
-  background: $secondary-background;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 300px;
+    height: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    align-items: center;
+    background: $secondary-background;
 }
 
 .lateral-menu h1 {
-  text-transform: uppercase;
-  text-align: center;
-  font-size: 20px;
-  line-height: 100px;
-  width: 100%;
-  border-right: 1px solid $secondary-color;
-  border-bottom: 1px solid $secondary-color;
-  background: $primary-background;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 20px;
+    line-height: 100px;
+    width: 100%;
+    border-right: 1px solid $secondary-color;
+    border-bottom: 1px solid $secondary-color;
+    background: $primary-background;
 }
 
 .url-area {
-  width: 100%;
+    width: 100%;
 }
 
 .url-area label,
 .download-status-wrapper p {
-  display: inline-block;
-  width: 100%;
-  text-align: center;
-  font-size: 25px;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: 25px;
 }
 
 .url-area label {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .url-area label::after,
 .download-status-wrapper .title-wrapper::after {
-  content: ':';
+    content: ':';
 }
 
 .url-group {
-  width: 100%;
-  text-align: center;
-  display: inline-block;
-  margin-top: 8px;
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    margin-top: 8px;
 }
 
 .url-group input,
 .url-group button {
-  padding: 10px;
-  text-align: center;
-  border: 1px solid $secondary-color;
-  color: white;
-  background: $primary-background;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid $secondary-color;
+    color: white;
+    background: $primary-background;
 }
 
 .url-group input {
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 
 .url-group button {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  margin-left: -5px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-left: -5px;
 }
 
 .download-status {
-  width: 250px;
-  height: 150px;
-  border: 1px solid $secondary-color;
-  border-radius: 10px;
-  margin-bottom: 100px;
-  margin-top: 5px;
-  background: $primary-background;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+    width: 250px;
+    height: 150px;
+    border: 1px solid $secondary-color;
+    border-radius: 10px;
+    margin-bottom: 100px;
+    margin-top: 5px;
+    background: $primary-background;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
 .error {
-  font-size: 30px;
-  text-align: center;
-  color: $primary-color;
+    font-size: 30px;
+    text-align: center;
+    color: $primary-color;
 }
 
 .success {
-  font-size: 25px;
-  color: #2ecc71;
+    font-size: 25px;
+    color: #2ecc71;
+}
+
+progress {
+    width: 90%;
 }
 
 .progress-title {
-  font-size: 20px;
+    font-size: 10px;
 }
 
 .cancel {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-size: 20px;
-  padding: 5px;
-  background: transparent;
-  color: white;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 20px;
+    padding: 5px;
+    background: transparent;
+    color: white;
 }
 
 .size-of-download {
-  margin-top: 10px;
+    margin-top: 10px;
 }
 
 .size-of-download span {
-  font-size: 18px;
-  color: #2ecc71;
+    font-size: 18px;
+    color: #2ecc71;
+}
+
+.cancel-download {
+    font-size: 20px;
 }

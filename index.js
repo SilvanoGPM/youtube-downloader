@@ -1,5 +1,10 @@
-const { app, BrowserWindow } = require('electron');
-const { join } = require('path');
+const {
+    app,
+    BrowserWindow
+} = require('electron');
+const {
+    join
+} = require('path');
 const icon = join(__dirname, 'img/icon.png');
 
 app.setAppUserModelId('com.skygod.youtube-downloader');
@@ -21,9 +26,11 @@ function createWindow() {
         show: false,
     });
 
-    window.maximize();
     window.loadFile('index.html');
-    window.once('ready-to-show', () => window.show());
+    window.once('ready-to-show', () => {
+        window.maximize();
+        window.show();
+    });
 }
 
 app.whenReady().then(createWindow);

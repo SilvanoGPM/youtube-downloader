@@ -7,7 +7,8 @@
 }
 
 *,
-*::after *::before {
+*::after,
+*::before {
   box-sizing: border-box;
 }
 
@@ -52,6 +53,15 @@ select {
   color: white;
   padding: 20px;
   z-index: 9999;
+  transition: .25s;
+}
+
+.control-button:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+[data-control="close"]:hover {
+  background: rgba(255, 0, 0, 0.9);
 }
 
 /* Lateral Menu */
@@ -153,8 +163,12 @@ select {
   color: #2ecc71;
 }
 
+progress {
+  width: 90%;
+}
+
 .progress-title {
-  font-size: 20px;
+  font-size: 10px;
 }
 
 .cancel {
@@ -174,6 +188,10 @@ select {
 .size-of-download span {
   font-size: 18px;
   color: #2ecc71;
+}
+
+.cancel-download {
+  font-size: 20px;
 }
 
 /* Principal Area */
