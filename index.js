@@ -14,8 +14,8 @@ function createWindow() {
     const window = new BrowserWindow({
         width: 800,
         height: 600,
-        minWidth: 300,
-        minHeight: 500,
+        minWidth: 800,
+        minHeight: 600,
         center: true,
         frame: false,
         icon,
