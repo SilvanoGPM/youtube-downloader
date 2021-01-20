@@ -1,110 +1,120 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Youtube Downloader</title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Youtube Downloader</title>
+        <link rel="stylesheet" href="fontawesome/css/all.css" />
+        <link rel="stylesheet" href="src/css/style.css" />
+    </head>
 
-    <link rel="stylesheet" href="fontawesome/css/all.css" />
-    <link rel="stylesheet" href="src/css/style.css" />
-</head>
-
-<body>
-
-    <div class="control-area">
-        <div class="draggable">
-            <img src="img/icon.png" alt="ytd-logo" />
-        </div>
-
-        <div class="menus">
-            <button class="control-button" data-control="minimize">_</button>
-            <button class="control-button" data-control="resize">□</button>
-            <button class="control-button" data-control="close">x</button>
-        </div>
-    </div>
-
-    <div class="lateral-menu">
-        <h1>Youtube Downloader</h1>
-
-        <div class="url-area">
-            <label for="yt-url">Put URL for information:</label>
-            <form class="url-group">
-                <input spellcheck="false" type="text" id="yt-url" />
-                <button><i class="fa fa-search"></i></button>
-            </form>
-        </div>
-
-        <div class="download-status-wrapper">
-            <p>Status</p>
-            <div class="download-status">
-
-            </div>
-        </div>
-    </div>
-
-    <div class="principal-area">
-
-        <div class="loading">
-
-        </div>
-
-        <div class="first-screen">
-            <div>
-                <h1>Welcome to Youtube Downloader!</h1>
-                <p>To get started, enter the URL in the field beside.</p>
-                <p>Developed by SkyG0D | My repository: <span class="repository" data-link="https://github.com/SkyG0D">https://github.com/SkyG0D</span>.
-                </p>
+    <body>
+        <header class="header">
+            <div class="draggable">
+                <img src="img/icon.png" alt="ytd-logo" />
             </div>
 
-            <img src="img/img1.png" alt="default-logo" />
-        </div>
+            <div class="header__buttons">
+                <button class="header__button" data-control="minimize">
+                    _
+                </button>
+                <button class="header__button" data-control="resize">□</button>
+                <button class="header__button" data-control="close">x</button>
+            </div>
+        </header>
 
-        <button id="close-menus" type="button">X</button>
+        <div class="lateral">
+            <h2 class="lateral__header">Youtube Downloader</h2>
 
-        <div class="infos">
-
-            <figure>
-                <img src="" alt="video-thumbnail" title="Video search thubmnail" />
-            </figure>
-
-            <div class="info-group">
-                <p>Title</p>
-                <output data-output="title"></output>
+            <div class="lateral__area">
+                <label for="video-url">Put URL for information:</label>
+                <form class="lateral__group">
+                    <input spellcheck="false" type="text" id="video-url" />
+                    <button><i class="fa fa-search"></i></button>
+                </form>
             </div>
 
-            <div class="info-group">
-                <p>Channel</p>
-                <output data-output="channel"></output>
-            </div>
-
-            <div class="info-group">
-                <p>Duration</p>
-                <output data-output="duration"></output>
+            <div class="download-status__wrapper">
+                <p>Status</p>
+                <div class="download-status"></div>
             </div>
         </div>
 
-        <div class="download-area">
+        <div class="principal-area">
+            <div class="loading"></div>
 
-            <div class="video-type">
-                <label for="video-type">Select download type</label>
-                <select name="video-type" id="video-type">
-                    <option value="highest">Video</option>
-                    <option selected value="lowest">Music</option>
-                </select>
+            <div class="jumbotron">
+                <div>
+                    <h2 class="jumbotron__header">
+                        Welcome to Youtube Downloader!
+                    </h2>
+                    <div class="jumbotron__body" >
+                        <p>
+                            To get started, enter the URL in the field beside.
+                        </p>
+                        <p>
+                            Developed by SkyG0D | My repository:
+                            <span
+                                class="repository"
+                                data-link="https://github.com/SkyG0D"
+                                >https://github.com/SkyG0D</span
+                            >.
+                        </p>
+                    </div>
+                </div>
+
+                <img class="jumbotron__img" src="img/img1.png" alt="default-logo" />
             </div>
 
-            <div class="download">
-                <p>Download</p>
-                <button id="download-button"><i class="fas fa-arrow-alt-circle-down"></i></button>
+            <button id="close-menus" type="button">X</button>
+
+            <div class="info">
+                <figure>
+                    <img
+                        src="img/icon.png"
+                        alt="video-thumbnail"
+                        title="Video search thubmnail"
+                    />
+                </figure>
+
+                <div class="info__group">
+                    <p>Title</p>
+                    <output data-output="title"></output>
+                </div>
+
+                <div class="info__group">
+                    <p>Channel</p>
+                    <output data-output="channel"></output>
+                </div>
+
+                <div class="info__group">
+                    <p>Duration</p>
+                    <output data-output="duration"></output>
+                </div>
+            </div>
+
+            <div class="download-area">
+                <div class="video-type">
+                    <label for="video-type">Select download type</label>
+                    <select name="video-type" id="video-type">
+                        <option value="highest">Video</option>
+                        <option selected value="lowest">Music</option>
+                    </select>
+                </div>
+
+                <div class="download">
+                    <p>Download</p>
+                    <button id="download-button">
+                        <i class="fas fa-arrow-alt-circle-down"></i>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script src="src/js/external-links.js"></script>
-    <script src="src/js/lateral-config.js"></script>
-    <script src="src/js/download.js"></script>
-    <script src="src/js/menu-buttons.js"></script>
-</body>
-
+        <script src="src/js/external-links.js"></script>
+        <script src="src/js/lateral-config.js"></script>
+        <script src="src/js/download.js"></script>
+        <script src="src/js/header.js"></script>
+    </body>
 </html>

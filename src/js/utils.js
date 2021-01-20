@@ -31,8 +31,8 @@ const utils = {
     },
 
     controlDisplayName(string) {
-        if (string.length > 90) {
-            return string.substring(0, 90) + "...";
+        if (string.length > 30) {
+            return string.substring(0, 30) + "...";
         }
 
         return string;

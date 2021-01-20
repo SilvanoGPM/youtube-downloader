@@ -1,13 +1,15 @@
-.url-group input,
-.url-group button, .download-status {
+.lateral__group input,
+.lateral__group button, .download-status, #close-menus, .info img, .video-type select {
   border: 1px solid #8f0000;
 }
 
-.download-status {
-  border-radius: 10px;
+.principal-area, .jumbotron {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.url-area label, .download-status-wrapper p {
+.lateral__area label, .download-status__wrapper p {
   display: inline-block;
   width: 100%;
   text-align: center;
@@ -92,7 +94,7 @@ select {
 }
 
 /* Control Area */
-.control-area {
+.header {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -102,39 +104,39 @@ select {
   background: #181818;
 }
 
-.control-area .draggable {
+.header__buttons {
+  flex-grow: 0;
+}
+
+.header__button {
+  background: transparent;
+  color: white;
+  padding: 20px;
+  z-index: 9999;
+  transition: 0.25s;
+}
+
+.header__button:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.header [data-control="close"]:hover {
+  background: rgba(255, 0, 0, 0.9);
+}
+
+.header .draggable {
   flex-grow: 1;
   -webkit-app-region: drag;
 }
 
-.control-area img {
+.header img {
   width: 35px;
   height: 35px;
   margin-left: 10px;
 }
 
-.menus {
-  flex-grow: 0;
-}
-
-.control-button {
-  background: transparent;
-  color: white;
-  padding: 20px;
-  z-index: 9999;
-  transition: .25s;
-}
-
-.control-button:hover {
-  background: rgba(0, 0, 0, 0.9);
-}
-
-[data-control="close"]:hover {
-  background: rgba(255, 0, 0, 0.9);
-}
-
 /* Lateral Menu */
-.lateral-menu {
+.lateral {
   position: fixed;
   top: 50px;
   left: 0;
@@ -147,7 +149,7 @@ select {
   background: #262626;
 }
 
-.lateral-menu h1 {
+.lateral__header {
   text-transform: uppercase;
   text-align: center;
   font-size: 20px;
@@ -158,38 +160,26 @@ select {
   background: #181818;
 }
 
-.url-area {
+.lateral__area {
   width: 100%;
 }
 
-.url-area label {
+.lateral__area label {
   cursor: pointer;
 }
 
-.url-group {
+.lateral__group {
   width: 100%;
   text-align: center;
-  display: inline-block;
   margin-top: 8px;
 }
 
-.url-group input,
-.url-group button {
+.lateral__group input,
+.lateral__group button {
   padding: 10px;
   text-align: center;
   color: white;
   background: #181818;
-}
-
-.url-group input {
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-}
-
-.url-group button {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  margin-left: -5px;
 }
 
 .download-status {
@@ -225,114 +215,16 @@ select {
 }
 
 /* Principal Area */
-.principal-area {
-  position: absolute;
-  top: 50px;
-  left: 300px;
-  display: flex;
-  flex-flow: row;
-  align-items: center;
-  width: calc(100% - 300px);
-  height: calc(100% - 50px);
-  border-top: 1px solid #8f0000;
-  background: #333333;
-  padding: 50px;
-  overflow: hidden;
-}
-
-.first-screen {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.first-screen h1 {
-  color: #8f0000;
-  font-size: 35px;
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.first-screen p {
-  text-align: center;
-}
-
-.first-screen img {
-  margin-top: 50px;
-  width: 150px;
-  height: 150px;
-}
-
-.first-screen .repository {
-  user-select: all;
-}
-
-.repository {
-  cursor: pointer;
-}
-
-.repository::selection {
-  color: white;
-  background: #ff7675;
-}
-
-.infos {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-.infos figure {
-  width: 200px;
-}
-
-.infos img {
-  width: 100%;
-  border: 1px solid #8f0000;
-  border-radius: 10px;
-}
-
-.info-group {
-  display: inline-block;
-  text-align: center;
-  width: 80%;
-  word-wrap: none;
-  margin: 15px 0 0 5px;
-}
-
-.info-group p,
-.info-group output {
-  display: inline;
-}
-
-.info-group p {
-  color: #8f0000;
-  text-indent: 50px;
-  font-size: 30px;
-}
-
-.info-group p::after {
-  content: ":";
-}
-
-.info-group output {
-  font-size: 25px;
-  font-weight: bold;
-  word-wrap: break-word;
-}
-
 #close-menus {
   position: absolute;
   top: 20px;
-  left: 20px;
+  right: 20px;
   display: none;
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
   background: transparent;
   color: white;
-  border: 1px solid #8f0000;
+  padding: 10px;
   border-radius: 50%;
   transition: 0.2s;
 }
@@ -342,6 +234,111 @@ select {
   border: 0;
 }
 
+.principal-area {
+  position: absolute;
+  top: 50px;
+  left: 300px;
+  width: calc(100% - 300px);
+  height: calc(100% - 50px);
+  border-top: 1px solid #8f0000;
+  background: #333333;
+  padding: 20px;
+  overflow: hidden;
+}
+
+@media screen and (min-height: 700px) {
+  .principal-area {
+    flex-direction: column;
+  }
+}
+
+/* Jumbotron */
+.jumbotron {
+  flex-direction: column;
+}
+
+.jumbotron__header {
+  color: #8f0000;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.jumbotron__body {
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.jumbotron__img {
+  margin-top: 50px;
+  width: 150px;
+  height: 150px;
+}
+
+.jumbotron .repository {
+  user-select: all;
+  cursor: pointer;
+}
+
+.jumbotron .repository::selection {
+  color: white;
+  background: #ff7675;
+}
+
+.info {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  border-right: 1px solid #262626;
+}
+
+.info figure {
+  padding: 0 10px;
+  max-width: 400px;
+  height: 200px;
+}
+
+.info img {
+  width: 100%;
+  height: 100%;
+}
+
+.info__group {
+  display: inline-block;
+  text-align: center;
+  width: 80%;
+  word-wrap: none;
+  margin: 15px 0 0 5px;
+}
+
+.info__group p,
+.info__group output {
+  display: inline;
+}
+
+.info__group p {
+  color: #8f0000;
+  text-indent: 50px;
+  font-size: 30px;
+}
+
+.info__group p::after {
+  content: ":";
+}
+
+.info__group output {
+  font-size: 25px;
+  font-weight: bold;
+  word-wrap: break-word;
+}
+
+@media screen and (min-height: 700px) {
+  .info {
+    border-right: none;
+  }
+}
+
 .download-area {
   width: 100%;
   display: none;
@@ -349,10 +346,27 @@ select {
   align-items: center;
 }
 
+@media screen and (min-height: 700px) {
+  .download-area {
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid #262626;
+  }
+}
+
 .video-type {
   margin-top: 20px;
   margin-bottom: 30px;
   margin-left: 10px;
+}
+
+@media screen and (min-height: 700px) {
+  .video-type {
+    margin-bottom: 0;
+  }
 }
 
 .video-type label,
@@ -373,11 +387,11 @@ select {
 }
 
 .video-type select {
-  background: #262626;
-  border: 1px solid #8f0000;
-  border-radius: 10px;
-  padding: 10px;
   color: white;
+  background: #262626;
+  padding: 10px 50px;
+  appearance: none;
+  text-align-last: center;
 }
 
 .download {
@@ -401,72 +415,14 @@ select {
 
 .download button i {
   font-size: 30px;
+  transition: 0.25s;
 }
 
-.download button:hover {
+.download button:hover i {
+  font-size: 20px;
+}
+
+.download button:active {
   background: #2ecc71;
-}
-
-.download button:hover > i {
-  animation: 1s spin;
-}
-
-@media screen and (min-width: 750px) {
-  .first-screen h1 {
-    font-size: 40px;
-  }
-  .first-screen p {
-    font-size: 25px;
-  }
-}
-
-@media screen and (min-width: 900px) {
-  .infos p,
-  .infos label {
-    font-size: 30px;
-  }
-}
-
-@media screen and (min-width: 900px) {
-  .infos figure {
-    width: 300px;
-  }
-}
-
-@media screen and (min-width: 1000px) {
-  .infos figure {
-    width: 400px;
-  }
-}
-
-@media screen and (min-height: 700px) {
-  .principal-area {
-    flex-direction: column;
-  }
-  .download-area {
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-    margin-top: 25px;
-    padding-top: 25px;
-    border-top: 1px solid #262626;
-  }
-  .video-type {
-    margin-bottom: 0;
-  }
-}
-
-@media screen and (max-width: 1000px) {
-  .download-area {
-    flex-direction: column;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  .infos output {
-    font-size: 20px;
-  }
-  .infos picture {
-    width: 500px;
-  }
+  transform: scale(0.9);
 }

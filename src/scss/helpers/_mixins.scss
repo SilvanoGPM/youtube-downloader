@@ -1,9 +1,11 @@
 %default-border {
-    border: 1px solid $secondary-color;
+    border: $border;
 }
 
-%rounded {
-    border-radius: 10px;
+%flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 %center-align {

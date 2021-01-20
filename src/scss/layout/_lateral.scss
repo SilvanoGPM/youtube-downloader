@@ -1,6 +1,6 @@
 /* Lateral Menu */
 
-.lateral-menu {
+.lateral {
     position: fixed;
     top: 50px;
     left: 0;
@@ -11,48 +11,42 @@
     justify-content: space-between;
     align-items: center;
     background: $secondary-background;
-    h1 {
+
+    &__header {
         text-transform: uppercase;
         text-align: center;
         font-size: 20px;
         line-height: 100px;
         width: 100%;
-        border-right: 1px solid $secondary-color;
-        border-bottom: 1px solid $secondary-color;
+        border-right: $border;
+        border-bottom: $border;
         background: $primary-background;
     }
-}
 
-.url-area {
-    width: 100%;
-    label {
-        @extend %center-align;
-        cursor: pointer;
+    &__area {
+        width: 100%;
+
+        label {
+            @extend %center-align;
+            cursor: pointer;
+        }
     }
-}
 
-.url-group {
-    width: 100%;
-    text-align: center;
-    display: inline-block;
-    margin-top: 8px;
-    input,
-    button {
-        @extend %default-border;
-        padding: 10px;
+    &__group {
+        width: 100%;
         text-align: center;
-        color: white;
-        background: $primary-background;
+        margin-top: 8px;
+
+        input,
+        button {
+            @extend %default-border;
+            padding: 10px;
+            text-align: center;
+            color: white;
+            background: $primary-background;
+        }
     }
-    input {
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
-    }
-    button {
-        border-top-right-radius: 10px;
-        border-bottom-right-radius: 10px;
-        margin-left: -5px;
-    }
+
 }
 
-@import "components/download-area";
+@import "components/download-status";

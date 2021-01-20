@@ -1,10 +1,5 @@
-.download-status-wrapper p {
-    @extend %center-align;
-}
-
 .download-status {
-    @extend %rounded,
-    %default-border;
+    @extend %default-border;
     width: 250px;
     height: 150px;
     margin-bottom: 100px;
@@ -15,6 +10,10 @@
     align-items: center;
     justify-content: center;
     position: relative;
+
+    &__wrapper p {
+        @extend %center-align;
+    }
 }
 
 .progress {

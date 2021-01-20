@@ -1,8 +1,9 @@
-const label = document.querySelector('.url-area label');
-const input = document.getElementById('yt-url');
+const label = document.querySelector('.lateral__area label');
+const input = document.querySelector('#video-url');
 
 const copyToInput = () => {
     input.value = '';
+    input.focus();
     document.execCommand('paste');
 }
 
