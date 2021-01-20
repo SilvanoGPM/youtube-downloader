@@ -1,3 +1,4 @@
+const { dialog } = require("electron").remote;
 const {
   dialog
 } = require('electron').remote;
@@ -10,30 +11,30 @@ const {
   getFilename,
 } = require(__dirname + '/src/js/utils.js');
 
-const ytdl = require('ytdl-core');
-const fs = require('fs');
+const ytdl = require("ytdl-core");
+const fs = require("fs");
 
-const loading = document.querySelector('.loading');
+const loading = document.querySelector(".loading");
 
-const searchForm = document.querySelector('.url-group');
+const searchForm = document.querySelector(".url-group");
 const urlInput = document.querySelector(".url-area input");
 
-const status = document.querySelector('.download-status');
+const status = document.querySelector(".download-status");
 let progressElt;
 let downloadedElt;
 
 const closeBtn = document.getElementById("close-menus");
-const firstScreen = document.querySelector('.first-screen');
+const firstScreen = document.querySelector(".first-screen");
 
-const infosElt = document.querySelector('.infos');
+const infosElt = document.querySelector(".infos");
 const thumbnailElt = infosElt.querySelector("img");
 const titleOutput = infosElt.querySelector('[data-output="title"]');
 const channelOutput = infosElt.querySelector('[data-output="channel"]');
 const durationOutput = infosElt.querySelector('[data-output="duration"]');
 
-const downloadArea = document.querySelector('.download-area');
+const downloadArea = document.querySelector(".download-area");
 const selectElt = downloadArea.querySelector("select");
-const downloadBtn = downloadArea.querySelector('button');
+const downloadBtn = downloadArea.querySelector("button");
 
 let url;
 let stream;
@@ -104,7 +105,7 @@ const handleError = err => {
   fs.writeFileSync(logsPath, err);
   status.innerHTML = `
     <span class="error" >Ocorred an error, try again<span>`;
-}
+};
 
 const unlockDownload = () => {
   downloadBtn.parentElement.style.cursor = 'default';
@@ -143,7 +144,9 @@ const initialDownloadSetup = path => res => {
         <p class="progress-title">Downloading...</ p>
         <progress class="progress" value="0" max="${max}"></progress>
         <div class="size-of-download">
-            <span class="downloaded" ></span><span> of <span>${byteToMb(max)}Mb</span>
+            <span class="downloaded" ></span><span> of <span>${byteToMb(
+              max
+            )}Mb</span>
         </div>
     `;
 
@@ -220,6 +223,6 @@ const handleSearchForm = evt => {
   searchURL();
 }
 
-searchForm.addEventListener('submit', handleSearchForm);
-downloadBtn.addEventListener('click', saveAs);
-closeBtn.addEventListener('click', hideMenus);
+searchForm.addEventListener("submit", handleSearchForm);
+downloadBtn.addEventListener("click", saveAs);
+closeBtn.addEventListener("click", hideMenus);
