@@ -89,11 +89,11 @@ const searchURL = () => {
             elementDisplay(loading, 'flex'),
         ])
 
-        status.innerHTML = '<span class="success" >URL found<span>';
+        status.innerHTML = '<span class="success" >URL encontrada!<span>';
         lastestSearchID = setTimeout(displayVideoInfo, 2000);
     } else {
         status.innerHTML = `
-        <span class="error" >Insert a valid URL<span>
+        <span class="error" >Insira uma URL válida!<span>
         `;
     }
 
@@ -104,7 +104,7 @@ const handleError = err => {
     const logsPath = `${__dirname}/logs/error-log-${Date.now()}.txt`;
     fs.writeFileSync(logsPath, err);
     status.innerHTML = `
-    <span class="error" >Ocorred an error, try again<span>`;
+    <span class="error" >Ocorreu um erro, tente novamente!<span>`;
 };
 
 const unlockDownload = () => {
@@ -115,16 +115,16 @@ const unlockDownload = () => {
 
 const cancelDownload = async path => {
     const option = await dialog.showMessageBox({
-        title: "Cancel Download",
-        message: "Cancel download?",
+        title: "Cancelar Download",
+        message: "Cancelar download?",
         type: "question",
-        buttons: ["Yes", "No"],
+        buttons: ["Sim", "Não"],
     })
 
     if (option.response === 0) {
         isDownloading = false;
         status.innerHTML = `
-            <span class="cancel-download" >Download canceled!<span>
+            <span class="cancel-download" >Download cancelado!<span>
         `;
         setTimeout(() => status.innerHTML = "", 1000);
 
@@ -144,9 +144,9 @@ const initialDownloadSetup = path => res => {
         <p class="progress-title">Downloading...</ p>
         <progress class="progress" value="0" max="${max}"></progress>
         <div class="size-of-download">
-            <span class="downloaded" ></span><span> of <span>${byteToMb(
+            <span class="downloaded" ></span><span> de <span>${byteToMb(
             max
-        )}Mb</span>
+        )}MB</span>
         </div>
     `;
 
@@ -167,7 +167,7 @@ const updateSize = data => {
 
 const downloadComplete = () => {
     if (isDownloading) {
-        status.innerHTML = '<p class="progress-title success" >Downloaded!</p>';
+        status.innerHTML = '<p class="progress-title success" >Download finalizado!</p>';
         unlockDownload();
     }
 }
@@ -203,9 +203,9 @@ const saveAs = () => {
     const defaultPath = `${process.env.USERPROFILE}/Downloads/${filename}`;
 
     const options = {
-        title: 'Select the path to the file',
+        title: 'Selecione o caminho para o arquivo',
         defaultPath,
-        buttonLabel: 'Save',
+        buttonLabel: 'Salvar',
         filters: [{
             name: 'Media Files',
             extensions: ['mp4', 'webm', 'mp3']

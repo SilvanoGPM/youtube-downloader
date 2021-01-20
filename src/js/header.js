@@ -12,10 +12,10 @@ const resize = () =>
 const close = async () => {
     if (isDownloading) {
         const option = await dialog.showMessageBox({
-            title: "Warning",
-            message: "This will cancel your download, are you sure?",
+            title: "Atenção",
+            message: "Isso cancelará seu download, tem certeza?",
             type: "warning",
-            buttons: ["Ok", "Cancel"],
+            buttons: ["Ok", "Retornar"],
         });
 
         if (option.response === 1) {
