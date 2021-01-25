@@ -1,228 +1,174 @@
-const { dialog } = require("electron").remote;
-const {
-    formatSeconds,
-    byteToMb,
-    elementDisplay,
-    changeElementsDisplay,
-    controlDisplayName,
-    getFilename,
-} = require(__dirname + '/src/js/utils.js');
-
-const ytdl = require("ytdl-core");
+const cp = require("child_process");
 const fs = require("fs");
+const ytdl = require("ytdl-core");
+const ffmpeg = require("ffmpeg-static");
 
-const loading = document.querySelector(".loading");
+const { byteToMb } = require('./utils');
+const handleError = require('./error-handler').default;
 
-const searchForm = document.querySelector(".lateral__group");
-const urlInput = document.querySelector("#video-url");
+class Downloader {
+    constructor({
+        output,
+        ref,
+        audioConfig,
+        videoConfig,
+        statusElt,
+        unlockDownload,
+    }) {
+        this.output = output;
+        this.ref = ref;
+        this.audioConfig = audioConfig;
+        this.videoConfig = videoConfig;
+        this.statusElt = statusElt;
 
-const status = document.querySelector(".download-status");
-let progressElt;
-let downloadedElt;
+        this.statusElt.innerHTML = this.getStatusProgressBarHTML();
 
-const closeBtn = document.getElementById("close-menus");
-const firstScreen = document.querySelector(".jumbotron");
+        this.progressElt = this.statusElt.querySelector('progress');
+        this.downloadedElt = this.statusElt.querySelector('.downloaded');
+        this.totalElt = this.statusElt.querySelector('.total');
 
-const infoElt = document.querySelector(".info");
-const thumbnailElt = infoElt.querySelector("img");
-const titleOutput = infoElt.querySelector('[data-output="title"]');
-const channelOutput = infoElt.querySelector('[data-output="channel"]');
-const durationOutput = infoElt.querySelector('[data-output="duration"]');
+        this.unlockDownload = unlockDownload;
 
-const downloadArea = document.querySelector(".download-area");
-const selectElt = downloadArea.querySelector("select");
-const downloadBtn = downloadArea.querySelector("button");
+        this.tracker = {
+            video: { downloaded: 0, total: 0 },
+            audio: { downloaded: 0, total: 0 },
+        };
 
-let url;
-let stream;
-let lastestSearchID;
-let isDownloading = false;
+        this.isDownloading = false;
 
-const showMenus = () =>
-    changeElementsDisplay([
-        elementDisplay(closeBtn, 'inline-block'),
-        elementDisplay(infoElt, 'flex'),
-        elementDisplay(downloadArea, 'flex'),
-        elementDisplay(loading)
-    ]);
+        this.progressBarID;
 
-const hideMenus = () =>
-    changeElementsDisplay([
-        elementDisplay(firstScreen, 'flex'),
-        elementDisplay(closeBtn),
-        elementDisplay(infoElt),
-        elementDisplay(downloadArea),
-        elementDisplay(loading),
-    ]);
-
-const displayVideoInfo = async () => {
-    const basicInfo = await ytdl.getBasicInfo(url);
-    const {
-        title,
-        ownerChannelName,
-        lengthSeconds,
-        thumbnail: images
-    } = basicInfo.videoDetails;
-
-    const thumbnailURL = images.thumbnails.pop().url;
-    thumbnailElt.src = thumbnailURL;
-
-    titleOutput.title = title;
-    channelOutput.title = ownerChannelName;
-
-    titleOutput.innerText = controlDisplayName(title);
-    channelOutput.innerText = controlDisplayName(ownerChannelName);
-    durationOutput.innerText = formatSeconds(lengthSeconds);
-
-    showMenus();
-}
-
-const searchURL = () => {
-    hideMenus();
-    clearTimeout(lastestSearchID);
-    status.innerHTML = "";
-
-    if (ytdl.validateURL(urlInput.value)) {
-        url = urlInput.value;
-        changeElementsDisplay([
-            elementDisplay(firstScreen),
-            elementDisplay(loading, 'flex'),
-        ])
-
-        status.innerHTML = '<span class="success" >URL encontrada!<span>';
-        lastestSearchID = setTimeout(displayVideoInfo, 2000);
-    } else {
-        status.innerHTML = `
-        <span class="error" >Insira uma URL válida!<span>
-        `;
+        this.showProgress = this.showProgress.bind(this);
+        this.downloadFinished = this.downloadFinished.bind(this);
+        this.updateProgressBar = this.updateProgressBar.bind(this);
     }
 
-    urlInput.value = '';
-}
-
-const handleError = err => {
-    const logsPath = `${__dirname}/logs/error-log-${Date.now()}.txt`;
-    fs.writeFileSync(logsPath, err);
-    status.innerHTML = `
-    <span class="error" >Ocorreu um erro, tente novamente!<span>`;
-};
-
-const unlockDownload = () => {
-    downloadBtn.parentElement.style.cursor = 'default';
-    downloadBtn.style.pointerEvents = 'all';
-    isDownloading = false;
-}
-
-const cancelDownload = async path => {
-    const option = await dialog.showMessageBox({
-        title: "Cancelar Download",
-        message: "Cancelar download?",
-        type: "question",
-        buttons: ["Sim", "Não"],
-    })
-
-    if (option.response === 0) {
-        isDownloading = false;
-        status.innerHTML = `
-            <span class="cancel-download" >Download cancelado!<span>
-        `;
-        setTimeout(() => status.innerHTML = "", 1000);
-
-        await stream.destroy();
-        fs.unlinkSync(path);
-
-        unlockDownload();
-    }
-}
-
-const initialDownloadSetup = path => res => {
-    if (isDownloading) {
-        const max = parseInt(res.headers['content-length'], 10);
-
-        status.innerHTML = `
-        <button class="cancel">X</button>
-        <p class="progress-title">Downloading...</ p>
-        <progress class="progress" value="0" max="${max}"></progress>
-        <div class="size-of-download">
-            <span class="downloaded" ></span><span> de <span>${byteToMb(
-            max
-        )}MB</span>
-        </div>
-    `;
-
-        const cancelButton = status.querySelector('button.cancel');
-        cancelButton.addEventListener('click', () => cancelDownload(path));
-
-        downloadedElt = status.querySelector('.downloaded');
-        progressElt = status.querySelector("progress");
-    }
-};
-
-const updateSize = data => {
-    if (isDownloading) {
-        progressElt.value += data.length;
-        downloadedElt.innerText = byteToMb(progressElt.value) + 'Mb';
-    }
-};
-
-const downloadComplete = () => {
-    if (isDownloading) {
-        status.innerHTML = '<p class="progress-title success" >Download finalizado!</p>';
-        unlockDownload();
-    }
-}
-
-function download(path) {
-    isDownloading = true;
-
-    const options = {
-        quality: selectElt.value
+    startVideo() {
+        this.getStreams();
+        this.configureFFMpeg();
+        this.configProgressBar(300);
     }
 
-    stream = ytdl(url, options)
-        .on('response', initialDownloadSetup(path))
-        .on('data', updateSize)
-        .on('finish', downloadComplete)
-        .on('error', err => {
-            handleError(err);
-            unlockDownload();
-        })
-        .pipe(fs.createWriteStream(path));
-}
-
-const handleVideoDownload = file => {
-    if (!file.canceled) {
-        downloadBtn.parentElement.style.cursor = 'not-allowed';
-        downloadBtn.style.pointerEvents = 'none';
-        download(file.filePath.toString());
-    }
-};
-
-const saveAs = () => {
-    const filename = getFilename(titleOutput.innerText, selectElt.value);
-    const defaultPath = `${process.env.USERPROFILE}/Downloads/${filename}`;
-
-    const options = {
-        title: 'Selecione o caminho para o arquivo',
-        defaultPath,
-        buttonLabel: 'Salvar',
-        filters: [{
-            name: 'Media Files',
-            extensions: ['mp4', 'webm', 'mp3']
-        }],
-        properties: [],
+    startAudio() {
+        this.getStreams();
+        this.downloadOnlyAudio();
+        this.audio.on('end', this.downloadFinished);
+        this.updateProgressBar(300)
     }
 
-    dialog.showSaveDialog(options)
-        .then(handleVideoDownload)
-        .catch(handleError);
+    downloadOnlyAudio() {
+        this.audio.pipe(fs.createWriteStream(this.output));
+    }
+
+    showProgress() {
+        const downloaded = this.tracker.audio.downloaded + this.tracker.video.downloaded;
+        const total = this.tracker.audio.total + this.tracker.video.total;
+
+        this.progressElt.max = total;
+        this.progressElt.value = downloaded;
+
+        this.totalElt.innerText = ` de ${byteToMb(total)}MB`;
+        this.downloadedElt.innerText = byteToMb(downloaded) + "MB";
+    }
+
+    downloadFinished() {
+        if ((this.ffmpegProcess && this.ffmpegProcess.exitCode === 0)
+            || this.isDownloading) {
+
+            this.isDownloading = false;
+            clearInterval(this.progressBarID);
+            this.statusElt.innerHTML =
+                `
+                <p class="progress-title success" >
+                    Download finalizado!
+                </p>
+            `;
+
+            setTimeout(() => this.statusElt.innerHTML = '', 3000);
+
+            this.unlockDownload();
+        }
+    }
+
+    configureFFMpeg() {
+        this.ffmpegProcess = cp.spawn(ffmpeg, [
+            // Remove ffmpeg's console spamming
+            '-loglevel', '8', '-hide_banner',
+            // Redirect/Enable progress messages
+            '-progress', 'pipe:3',
+            // Set inputs
+            '-i', 'pipe:4',
+            '-i', 'pipe:5',
+            // Map audio & video from streams
+            '-map', '0:a',
+            '-map', '1:v',
+            // Keep encoding
+            '-c:v', 'copy',
+            // Define output file
+            this.output,
+        ], {
+            windowsHide: true,
+            stdio: [
+                /* Standard: stdin, stdout, stderr */
+                'inherit', 'inherit', 'inherit',
+                /* Custom: pipe:3, pipe:4, pipe:5 */
+                'pipe', 'pipe', 'pipe',
+            ],
+        });
+
+        this.audio.pipe(this.ffmpegProcess.stdio[4]);
+        this.video.pipe(this.ffmpegProcess.stdio[5]);
+    }
+
+    updateProgressBar(interval = 1000) {
+        const progressBarInterval = Math.max(interval, 300);
+
+        this.progressBarID =
+            setInterval(this.showProgress, progressBarInterval);
+    }
+
+    configProgressBar(interval) {
+        this.ffmpegProcess.stdio[3].on('data', () => {
+            if (!this.progressBarID) {
+                this.updateProgressBar(interval);
+            }
+        });
+
+        this.ffmpegProcess.on('close', this.downloadFinished);
+    }
+
+    getStreams() {
+        this.isDownloading = true;
+
+        this.audio = ytdl(this.ref, this.audioConfig)
+            .on('progress', (_, downloaded, total) => {
+                this.tracker.audio = { downloaded, total };
+            })
+            .on('error', handleError(this.statusElt));
+
+        if (this.videoConfig) {
+            this.video = ytdl(this.ref, this.videoConfig)
+                .on('progress', (_, downloaded, total) => {
+                    this.tracker.video = { downloaded, total };
+                })
+                .on('error', handleError(this.statusElt));
+        }
+    }
+
+    getStatusProgressBarHTML() {
+        return (
+            `
+                <button class="cancel">X</button>
+                <p class="progress-title">Downloading...</ p>
+                <progress class="progress" value="0" max="${Infinity}"></progress>
+                <div class="size-of-download">
+                    <span class="downloaded"></span>
+                    <span class="total"></span>
+                </div>
+            `
+        );
+    }
+
 }
 
-const handleSearchForm = evt => {
-    evt.preventDefault();
-    searchURL();
-}
-
-searchForm.addEventListener("submit", handleSearchForm);
-downloadBtn.addEventListener("click", saveAs);
-closeBtn.addEventListener("click", hideMenus);
+exports.default = Downloader;

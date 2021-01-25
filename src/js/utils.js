@@ -42,7 +42,7 @@ const utils = {
         const videoName = string
             .replace(/\s+/g, '-')
             .replace(/([^\w-])+/g, "");
-        const extension = downloadType === 'highest' ? '.mp4' : '.mp3';
+        const extension = downloadType === 'video' ? '.mp4' : '.mp3';
         return videoName + extension;
     }
 }

@@ -102,9 +102,12 @@
                 <div class="video-type">
                     <label for="video-type">Selecione o tipo do download</label>
                     <select name="video-type" id="video-type">
-                        <option value="highest">Vídeo</option>
-                        <option selected value="lowest">Música</option>
+                        <option value="video" >Vídeo</option>
+                        <option value="audio" >Aúdio</option>
                     </select>
+
+                    <label for="video-quality">Selecione a qualidade do download</label>
+                    <select name="video-quality" id="video-quality"></select>
                 </div>
 
                 <div class="download">
@@ -118,7 +121,7 @@
 
         <script src="src/js/external-links.js"></script>
         <script src="src/js/lateral-config.js"></script>
-        <script src="src/js/download.js"></script>
+        <script src="src/js/setup.js"></script>
         <script src="src/js/header.js"></script>
     </body>
 </html>

@@ -361,6 +361,7 @@ select {
   margin-top: 20px;
   margin-bottom: 30px;
   margin-left: 10px;
+  text-align: center;
 }
 
 @media screen and (min-height: 700px) {
@@ -383,7 +384,7 @@ select {
 .video-type label {
   display: inline-block;
   text-align: center;
-  width: 100%;
+  width: 50%;
 }
 
 .video-type select {
@@ -391,6 +392,7 @@ select {
   background: #262626;
   padding: 10px 50px;
   appearance: none;
+  margin-bottom: 20px;
   text-align-last: center;
 }
 
