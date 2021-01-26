@@ -3,91 +3,83 @@ const fs = require("fs");
 const ytdl = require("ytdl-core");
 const ffmpeg = require("ffmpeg-static");
 
-const { byteToMb } = require('./utils');
-const handleError = require('./error-handler').default;
-
 class Downloader {
-    constructor({
-        output,
-        ref,
-        audioConfig,
-        videoConfig,
-        statusElt,
-        unlockDownload,
-    }) {
+    constructor({ output, ref, config: { audio, video } }) {
         this.output = output;
         this.ref = ref;
-        this.audioConfig = audioConfig;
-        this.videoConfig = videoConfig;
-        this.statusElt = statusElt;
-
-        this.statusElt.innerHTML = this.getStatusProgressBarHTML();
-
-        this.progressElt = this.statusElt.querySelector('progress');
-        this.downloadedElt = this.statusElt.querySelector('.downloaded');
-        this.totalElt = this.statusElt.querySelector('.total');
-
-        this.unlockDownload = unlockDownload;
+        this.config = { audio, video };
 
         this.tracker = {
-            video: { downloaded: 0, total: 0 },
             audio: { downloaded: 0, total: 0 },
+            video: { downloaded: 0, total: 0 },
         };
 
         this.isDownloading = false;
+        this.onlyAudio = video.quality == null;
 
-        this.progressBarID;
+        this.progressId;
 
-        this.showProgress = this.showProgress.bind(this);
+        this.eventTypes = Object.create(null);
+        this.eventTypes.started = null;
+        this.eventTypes.finished = null;
+        this.eventTypes.data = null;
+        this.eventTypes.canceled = null;
+        this.eventTypes.error = err => {
+            console.log('Error', err);
+        }
+
+        this.showProgress = this.updateProgress.bind(this);
         this.downloadFinished = this.downloadFinished.bind(this);
-        this.updateProgressBar = this.updateProgressBar.bind(this);
+        this.updateProgressBar = this.configureProgress.bind(this);
+        this.hasError = this.hasError.bind(this);
     }
 
-    startVideo() {
+    start() {
+        this.isDownloading = true;
         this.getStreams();
-        this.configureFFMpeg();
-        this.configProgressBar(300);
-    }
 
-    startAudio() {
-        this.getStreams();
-        this.downloadOnlyAudio();
-        this.audio.on('end', this.downloadFinished);
-        this.updateProgressBar(300)
-    }
+        if (this.onlyAudio) {
+            this.configureAudioStream();
+            this.downloadOnlyAudio();
+        } else {
+            this.configureFFMpeg();
+            this.downloadVideo();
+        }
 
-    downloadOnlyAudio() {
-        this.audio.pipe(fs.createWriteStream(this.output));
-    }
-
-    showProgress() {
-        const downloaded = this.tracker.audio.downloaded + this.tracker.video.downloaded;
-        const total = this.tracker.audio.total + this.tracker.video.total;
-
-        this.progressElt.max = total;
-        this.progressElt.value = downloaded;
-
-        this.totalElt.innerText = ` de ${byteToMb(total)}MB`;
-        this.downloadedElt.innerText = byteToMb(downloaded) + "MB";
     }
 
     downloadFinished() {
-        if ((this.ffmpegProcess && this.ffmpegProcess.exitCode === 0)
-            || this.isDownloading) {
+        if (this.isDownloading) {
+            clearInterval(this.progressId);
 
             this.isDownloading = false;
-            clearInterval(this.progressBarID);
-            this.statusElt.innerHTML =
-                `
-                <p class="progress-title success" >
-                    Download finalizado!
-                </p>
-            `;
-
-            setTimeout(() => this.statusElt.innerHTML = '', 3000);
-
-            this.unlockDownload();
+            this.dispatchEvent("finished");
         }
+    }
+
+    getStreams() {
+        this.audio = ytdl(this.ref, this.config.audio)
+            .on('progress', (_, downloaded, total) => {
+                this.tracker.audio = { downloaded, total };
+            })
+            .on('error', this.hasError);
+
+        if (!this.onlyAudio) {
+            this.video = ytdl(this.ref, this.config.video)
+                .on('progress', (_, downloaded, total) => {
+                    this.tracker.video = { downloaded, total };
+                })
+                .on('error', this.hasError);
+        }
+    }
+
+    updateProgress() {
+        this.dispatchEvent("data", this.tracker);
+    }
+
+    configureAudioStream() {
+        this.audio.on("response", () => this.configureProgress());
+        this.audio.on("end", this.downloadFinished);
     }
 
     configureFFMpeg() {
@@ -116,57 +108,67 @@ class Downloader {
             ],
         });
 
-        this.audio.pipe(this.ffmpegProcess.stdio[4]);
-        this.video.pipe(this.ffmpegProcess.stdio[5]);
+        this.ffmpegProcess.stdio[3].on("data", () => this.configureProgress(300));
+        this.ffmpegProcess.on("close", this.downloadFinished);
     }
 
-    updateProgressBar(interval = 1000) {
-        const progressBarInterval = Math.max(interval, 300);
+    configureProgress(interval = 300) {
+        if (!this.progressId) {
+            const progressInterval = Math.max(interval, 300);
 
-        this.progressBarID =
-            setInterval(this.showProgress, progressBarInterval);
-    }
+            this.progressId =
+                setInterval(this.updateProgress, progressInterval);
 
-    configProgressBar(interval) {
-        this.ffmpegProcess.stdio[3].on('data', () => {
-            if (!this.progressBarID) {
-                this.updateProgressBar(interval);
-            }
-        });
-
-        this.ffmpegProcess.on('close', this.downloadFinished);
-    }
-
-    getStreams() {
-        this.isDownloading = true;
-
-        this.audio = ytdl(this.ref, this.audioConfig)
-            .on('progress', (_, downloaded, total) => {
-                this.tracker.audio = { downloaded, total };
-            })
-            .on('error', handleError(this.statusElt));
-
-        if (this.videoConfig) {
-            this.video = ytdl(this.ref, this.videoConfig)
-                .on('progress', (_, downloaded, total) => {
-                    this.tracker.video = { downloaded, total };
-                })
-                .on('error', handleError(this.statusElt));
+            this.dispatchEvent("started");
         }
     }
 
-    getStatusProgressBarHTML() {
-        return (
-            `
-                <button class="cancel">X</button>
-                <p class="progress-title">Downloading...</ p>
-                <progress class="progress" value="0" max="${Infinity}"></progress>
-                <div class="size-of-download">
-                    <span class="downloaded"></span>
-                    <span class="total"></span>
-                </div>
-            `
-        );
+    async cancelDownload() {
+        clearInterval(this.progressId);
+        this.isDownloading = false;
+
+        if (this.audio) {
+            this.audio.destroy();
+        }
+
+        if (this.video) {
+            this.ffmpegProcess.stdio[3].destroy();
+            this.ffmpegProcess.stdio[4].destroy();
+            this.ffmpegProcess.stdio[5].destroy();
+            this.ffmpegProcess.kill("SIGKILL");
+            this.video.destroy();
+        }
+
+        setTimeout(() => fs.unlinkSync(this.output));
+        this.dispatchEvent("canceled");
+    }
+
+    hasError(error) {
+        this.dispatchEvent("error", error);
+    }
+
+    on(type, handler) {
+        if (typeof handler !== "function") {
+            throw new TypeError("handler is not a function");
+        }
+
+        if (!(type in this.eventTypes)) {
+            throw new TypeError(`"${type}" is not valid event`);
+        }
+
+        this.eventTypes[type] = handler;
+    }
+
+    dispatchEvent(type, ...args) {
+        if (!(type in this.eventTypes)) {
+            throw new TypeError(`"${type}" is not valid event`);
+        }
+
+        const event = this.eventTypes[type];
+        if (event) {
+            event.apply(null, args);
+        }
+
     }
 
 }

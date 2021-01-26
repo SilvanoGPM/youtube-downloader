@@ -7,15 +7,15 @@ const utils = {
         const minutes = Math.floor(seconds / 60);
         const restSeconds = (seconds - (60 * minutes))
         return minutes < 60 ?
-            `${utils.filingZero(minutes)}:${utils.filingZero(restSeconds)}` :
-            '1H+';
+            `${utils.filingZero(minutes)}:${utils.filingZero(restSeconds)}`
+             : '1H+';
     },
 
     byteToMb(bytes) {
         return ((bytes / 1024) / 1024).toFixed(2);
     },
 
-    elementDisplay(elt, value = 'none') {
+    eltDisplay(elt, value = 'none') {
         return {
             elt,
             value
@@ -44,6 +44,18 @@ const utils = {
             .replace(/([^\w-])+/g, "");
         const extension = downloadType === 'video' ? '.mp4' : '.mp3';
         return videoName + extension;
+    },
+
+    between(value, min, max) {
+        return value >= min && value <= max;
+    },
+
+    toQualityObject({ container, itag, audioBitrate, qualityLabel }) {
+        return {
+            label: qualityLabel || audioBitrate + "k",
+            quality: String(itag),
+            extension: container,
+        }
     }
 }
 
