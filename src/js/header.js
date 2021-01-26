@@ -13,12 +13,12 @@ const close = async () => {
     if (isDownloading) {
         const option = await dialog.showMessageBox({
             title: "Atenção",
-            message: "Isso cancelará seu download, tem certeza?",
+            message: "Isso corromperá seu download, tem certeza?",
             type: "warning",
-            buttons: ["Ok", "Retornar"],
+            buttons: ["Continuar download", "Fechar"],
         });
 
-        if (option.response === 1) {
+        if (option.response === 0) {
             return;
         }
     }

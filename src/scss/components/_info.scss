@@ -1,5 +1,5 @@
 .info {
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
@@ -32,17 +32,27 @@
         p {
             color: $secondary-color;
             text-indent: 50px;
-            font-size: 30px;
+            font-size: 20px;
 
             &::after {
                 content: ":";
             }
+
+            @media #{$mq-min-height} {
+                font-size: 25px;
+            }
+
         }
 
         output {
-            font-size: 25px;
+            font-size: 16px;
             font-weight: bold;
             word-wrap: break-word;
+
+            @media #{$mq-min-height} {
+                font-size: 20px;
+            }
+
         }
     }
 

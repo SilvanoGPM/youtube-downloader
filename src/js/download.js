@@ -28,9 +28,8 @@ class Downloader {
             console.log('Error', err);
         }
 
-        this.showProgress = this.updateProgress.bind(this);
+        this.updateProgress = this.updateProgress.bind(this);
         this.downloadFinished = this.downloadFinished.bind(this);
-        this.updateProgressBar = this.configureProgress.bind(this);
         this.hasError = this.hasError.bind(this);
     }
 
@@ -48,6 +47,15 @@ class Downloader {
 
     }
 
+    downloadOnlyAudio() {
+        this.audio.pipe(fs.createWriteStream(this.output));
+    }
+
+    downloadVideo() {
+        this.audio.pipe(this.ffmpegProcess.stdio[4]);
+        this.video.pipe(this.ffmpegProcess.stdio[5]);
+    }
+
     downloadFinished() {
         if (this.isDownloading) {
             clearInterval(this.progressId);
@@ -55,6 +63,32 @@ class Downloader {
             this.isDownloading = false;
             this.dispatchEvent("finished");
         }
+    }
+
+    cancelDownload() {
+        clearInterval(this.progressId);
+        this.isDownloading = false;
+
+        if (this.audio) {
+            this.audio.destroy();
+        }
+
+        if (this.video) {
+            this.ffmpegProcess.stdio[3].destroy();
+            this.ffmpegProcess.stdio[4].destroy();
+            this.ffmpegProcess.stdio[5].destroy();
+            this.ffmpegProcess.kill("SIGKILL");
+            this.video.destroy();
+        }
+
+        const thisId = setInterval(() => {
+            if (this.ffmpegProcess.killed) {
+                clearInterval(thisId);
+                fs.unlinkSync(this.output);
+            }
+        }, 1000);
+
+        this.dispatchEvent("canceled");
     }
 
     getStreams() {
@@ -121,26 +155,6 @@ class Downloader {
 
             this.dispatchEvent("started");
         }
-    }
-
-    async cancelDownload() {
-        clearInterval(this.progressId);
-        this.isDownloading = false;
-
-        if (this.audio) {
-            this.audio.destroy();
-        }
-
-        if (this.video) {
-            this.ffmpegProcess.stdio[3].destroy();
-            this.ffmpegProcess.stdio[4].destroy();
-            this.ffmpegProcess.stdio[5].destroy();
-            this.ffmpegProcess.kill("SIGKILL");
-            this.video.destroy();
-        }
-
-        setTimeout(() => fs.unlinkSync(this.output));
-        this.dispatchEvent("canceled");
     }
 
     hasError(error) {

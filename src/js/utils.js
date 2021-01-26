@@ -8,7 +8,7 @@ const utils = {
         const restSeconds = (seconds - (60 * minutes))
         return minutes < 60 ?
             `${utils.filingZero(minutes)}:${utils.filingZero(restSeconds)}`
-             : '1H+';
+            : '1H+';
     },
 
     byteToMb(bytes) {
@@ -22,17 +22,19 @@ const utils = {
         };
     },
 
-    changeElementsDisplay(elements) {
-        elements.forEach(element => {
-            const elt = element.elt;
-            const value = element.value;
-            elt.style.display = value;
-        });
+    changeElementDisplay(element) {
+        const elt = element.elt;
+        const value = element.value;
+        elt.style.display = value;
     },
 
-    controlDisplayName(string) {
-        if (string.length > 30) {
-            return string.substring(0, 30) + "...";
+    changeElementsDisplay(elements) {
+        elements.forEach(utils.changeElementDisplay);
+    },
+
+    controlDisplayName(string, length) {
+        if (string.length > length) {
+            return string.substring(0, length) + "...";
         }
 
         return string;
@@ -56,6 +58,10 @@ const utils = {
             quality: String(itag),
             extension: container,
         }
+    },
+
+    byQualityValue({ itag: a }, { itag: b }) {
+        return a - b;
     }
 }
 

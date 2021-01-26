@@ -30,7 +30,11 @@
             <div class="lateral__area">
                 <label for="video-url">Coloque a URL para informações:</label>
                 <form class="lateral__group">
-                    <input value="https://www.youtube.com/watch?v=2EHuX9rhRwI&list=RDMM&index=6" spellcheck="false" type="text" id="video-url" />
+                    <input
+                        spellcheck="false"
+                        type="text"
+                        id="video-url"
+                    />
                     <button><i class="fa fa-search"></i></button>
                 </form>
             </div>
@@ -50,9 +54,7 @@
                         Bem vindo ao Youtube Downloader!
                     </h2>
                     <div class="jumbotron__body">
-                        <p>
-                            Para iniciar, coloque a URL no campo ao lado.
-                        </p>
+                        <p>Para iniciar, coloque a URL no campo ao lado.</p>
                         <p>
                             Desenvolvido por SkyG0D | Meu repositório:
                             <span
@@ -71,50 +73,61 @@
                 />
             </div>
 
-            <button id="close-menus" type="button">X</button>
+            <div class="downloading__wrapper">
+                <button id="close-menus" type="button">X</button>
 
-            <div class="info">
-                <figure>
-                    <img
-                        src="img/icon.png"
-                        alt="video-thumbnail"
-                        title="Video search thubmnail"
-                    />
-                </figure>
+                <div class="info">
+                    <figure>
+                        <img
+                            src="img/icon.png"
+                            alt="video-thumbnail"
+                            title="Video search thubmnail"
+                        />
+                    </figure>
 
-                <div class="info__group">
-                    <p>Título</p>
-                    <output data-output="title"></output>
+                    <div class="info__group">
+                        <p>Título</p>
+                        <output data-output="title"></output>
+                    </div>
+
+                    <div class="info__group">
+                        <p>Canal</p>
+                        <output data-output="channel"></output>
+                    </div>
+
+                    <div class="info__group">
+                        <p>Duração</p>
+                        <output data-output="duration"></output>
+                    </div>
                 </div>
 
-                <div class="info__group">
-                    <p>Canal</p>
-                    <output data-output="channel"></output>
-                </div>
+                <div class="download-area">
+                    <div class="video-option">
+                        <label for="video-type"
+                            >Selecione o tipo do download</label
+                        >
+                        <select name="video-type" id="video-type">
+                            <option value="video">Vídeo</option>
+                            <option value="audio">Aúdio</option>
+                        </select>
+                    </div>
 
-                <div class="info__group">
-                    <p>Duração</p>
-                    <output data-output="duration"></output>
-                </div>
-            </div>
+                    <div class="video-option">
+                        <label for="video-quality"
+                            >Selecione a qualidade do download</label
+                        >
+                        <select
+                            name="video-quality"
+                            id="video-quality"
+                        ></select>
+                    </div>
 
-            <div class="download-area">
-                <div class="video-type">
-                    <label for="video-type">Selecione o tipo do download</label>
-                    <select name="video-type" id="video-type">
-                        <option value="video" >Vídeo</option>
-                        <option value="audio" >Aúdio</option>
-                    </select>
-
-                    <label for="video-quality">Selecione a qualidade do download</label>
-                    <select name="video-quality" id="video-quality"></select>
-                </div>
-
-                <div class="download">
-                    <p>Download</p>
-                    <button id="download-button">
-                        <i class="fas fa-arrow-alt-circle-down"></i>
-                    </button>
+                    <div class="download">
+                        <p>Download</p>
+                        <button id="download-button">
+                            <i class="fas fa-arrow-alt-circle-down"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
