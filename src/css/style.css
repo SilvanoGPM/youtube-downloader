@@ -200,7 +200,7 @@ select {
 }
 
 .progress-title {
-  font-size: 10px;
+  font-size: 25px;
 }
 
 .loading {
@@ -222,7 +222,7 @@ select {
 @media screen and (min-height: 700px) {
   .downloading__wrapper {
     flex-direction: column;
-    min-width: 400px;
+    min-width: 500px;
     max-width: 600px;
     width: auto;
   }
@@ -334,9 +334,9 @@ select {
   content: ":";
 }
 
-@media screen and (min-height: 700px) {
+@media (min-width: 900px) {
   .info__group p {
-    font-size: 25px;
+    font-size: 30px;
   }
 }
 
@@ -346,9 +346,9 @@ select {
   word-wrap: break-word;
 }
 
-@media screen and (min-height: 700px) {
+@media (min-width: 900px) {
   .info__group output {
-    font-size: 20px;
+    font-size: 22px;
   }
 }
 

@@ -70,7 +70,7 @@ const hideMenusAndShowFirstScreen = () => (
     ])
 );
 
-const showStatusMsg = (msg, cssClass = '', timeout) => {
+const showStatusMsg = (msg, cssClass = "", timeout) => {
     $statusElt.innerHTML = `<span class="${cssClass}" >${msg}</span>`;
 
     if (timeout) {
@@ -121,35 +121,37 @@ const setVideoInfo = async () => {
 }
 
 const searchURL = () => {
-    clearTimeout(lastestSearchId);
+    if (!isDownloading) {
+        clearTimeout(lastestSearchId);
 
-    hideMenusAndShowFirstScreen();
+        hideMenusAndShowFirstScreen();
 
-    let msg = "Insira uma URL válida!";
-    let msgClass = "error";
+        let msg = "Insira uma URL válida!";
+        let msgClass = "error";
 
-    if (ytdl.validateURL($urlInput.value)) {
-        changeElementsDisplay([
-            eltDisplay($firstScreen),
-            eltDisplay($loading, 'flex'),
-        ]);
+        if (ytdl.validateURL($urlInput.value)) {
+            changeElementsDisplay([
+                eltDisplay($firstScreen),
+                eltDisplay($loading, 'flex'),
+            ]);
 
-        $selectTypeElt.value = "video";
+            $selectTypeElt.value = "video";
 
-        msg = "URL encontrada!";
-        msgClass = "success";
+            msg = "URL encontrada!";
+            msgClass = "success";
 
-        url = $urlInput.value;
-        setVideoInfo();
+            url = $urlInput.value;
+            setVideoInfo();
+        }
+
+        showStatusMsg(msg, msgClass);
+        $urlInput.value = '';
     }
-
-    showStatusMsg(msg, msgClass);
-    $urlInput.value = '';
 }
 
 const unlockDownload = () => {
     $downloadBtn.addEventListener("click", saveAs);
-    changeElementDisplay(eltDisplay($downloadArea, "flex"));
+    changeElementDisplay(eltDisplay($downloadArea, "block"));
     isDownloading = false;
 }
 
@@ -173,7 +175,6 @@ const downloadStarted = downloader => {
     return () => {
         const cancelButton = $statusElt.querySelector('button.cancel');
         cancelButton.addEventListener('click', () => cancelDownload(downloader));
-        isDownloading = true;
     }
 }
 
@@ -183,6 +184,7 @@ const downloadFinished = () => {
 }
 
 const showProgress = ({ audio, video }) => {
+
     const downloaded = audio.downloaded + video.downloaded;
     const total = audio.total + video.total;
 
@@ -244,6 +246,7 @@ const download = path => {
 
     setStatusProgressBarHTML();
     configDownloaderEvents(downloader);
+    isDownloading = true;
 }
 
 const handleVideoDownload = ({ canceled, filePath }) => {
