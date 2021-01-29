@@ -51,6 +51,14 @@
 
  </div>
 
+# Imagens
+
+![image](docs/img/Screenshot_1.png)
+
+![image](docs/img/Screenshot_2.png)
+
+![image](docs/img/ytd.gif)
+
 # Contribuições :hearts:
 
 Caso queria contribuir com o projeto, por favor entre em contato.
